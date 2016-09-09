@@ -1,0 +1,34 @@
+{
+    "filter":"simple",
+    "thread": 1,
+    "name": "yangguangdai",
+    "collection":"blacklist",
+    "seeds": [
+        {
+            "url": "http://www.ygdai.com/s/blacklist.html",
+            "processor": "list_p"
+        }
+    ],
+    "processors": [
+        {
+            "index": "list_p",
+            "crawler_data": [
+                {
+                    "_root":"ul[class='f12 pt10 pb10 border-dash-b']",
+                    "name": "li[class='w297 pl10 fl tall lh30'] span:contains('姓名：') ~ a",
+                    "card": "li[class='w297 pl10 fl tall lh30'] span:contains('身份证：') ~ b",
+                    "email":";html;邮箱：</span>\\s*([^\\s]+)<",
+                    "mobile":";html;手机号：</span>\\s*([^\\s]+)<",
+       		    "work_unit":";html;工作单位：</span>\\s*([^\\s]+)<",
+       		    "job":";html;职位：</span>\\s*([^\\s]+)<"
+                }
+            ],
+            "crawler_request": [
+                {
+                    "url": "a:contains('下一页');href",
+                    "processor": "list_p"
+                }
+            ]
+        }
+    ]
+}

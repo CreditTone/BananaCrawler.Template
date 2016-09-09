@@ -1,0 +1,75 @@
+{
+    "filter":{
+        "type":"simple",
+        "target":["info"]
+    },
+    "thread": 1,
+    "name": "ppd",
+    "collection":"blacklist",
+    "seeds": [
+        {
+            "url": "http://www.ppdai.com/blacklist/2015_m0_p1",
+            "processor": "list_p"
+        },
+        {
+            "url": "http://www.ppdai.com/blacklist/2014_m0",
+            "processor": "list_p"
+        },
+        {
+            "url": "http://www.ppdai.com/blacklist/2013_m0",
+            "processor": "list_p"
+        },
+        {
+            "url": "http://www.ppdai.com/blacklist/2012_m0",
+            "processor": "list_p"
+        },
+        {
+            "url": "http://www.ppdai.com/blacklist/2011_m0",
+            "processor": "list_p"
+        },
+        {
+            "url": "http://www.ppdai.com/blacklist/2010_m0",
+            "processor": "list_p"
+        },
+        {
+            "url":"http://www.ppdai.com/blacklist/2009_m0",
+            "processor": "list_p"
+        },
+        {
+            "url":"http://www.ppdai.com/blacklist/2008_m0",
+            "processor": "list_p"
+        }
+    ],
+    "queue":{
+        "delay":1000,
+        "suport_priority":true
+    },
+    "processors": [
+        {
+            "index": "list_p",
+            "crawler_request": [
+                {
+                    "url":"a:contains('下一页');href",
+                    "priority":2,
+                    "processor": "list_p"
+                },
+                {
+                    "_root":"p:contains('真实姓名')",
+                    "url":"a;href",
+                    "priority":3,
+                    "processor":"info"
+                }
+            ]
+        },
+        {
+            "index":"info",
+            "crawler_data": [
+                {
+                    "name": ";html;姓名：([^\\s]+)",
+                    "card": ";html;身份证号：([^\\s]+)",
+                    "mobile":";html;手机号：([^\\s]+)"
+                }
+            ]
+        }
+    ]
+}

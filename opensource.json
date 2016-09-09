@@ -1,0 +1,34 @@
+{
+    "filter":"simple",
+    "thread": 1,
+    "name": "opensource",
+    "seeds": [
+        {
+            "url": "http://www.oschina.net/project/list",
+            "processor": "list_p"
+        }
+    ],
+    "processors": [
+        {
+            "index": "list_p",
+            "crawler_data": [
+                {
+                    "_root":"ul.List li",
+                    "title": "h3",
+                    "detail": "p.detail",
+                    "news":"p.news",
+                    "hy":"$request.hy"
+                }
+            ],
+            "crawler_request": [
+                {
+                    "url": "li[class='page next'] a;href",
+                    "attribute":{
+                        "hy":"xpath"
+                    },
+                    "processor": "list_p"
+                }
+            ]
+        }
+    ]
+}

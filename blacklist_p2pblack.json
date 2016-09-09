@@ -1,0 +1,42 @@
+{
+    "filter":"simple",
+    "thread": 1,
+    "name": "p2pblack",
+    "collection":"blacklist",
+    "loops": 5,
+    "seeds": [
+        {
+            "url": "http://www.p2pblack.com/pageHome.html",
+            "processor": "list_p"
+        }
+    ],
+    "queue":{
+        "delay":1000
+    },
+    "processors": [
+        {
+            "index": "list_p",
+            "crawler_request": [
+                {
+                    "_root":"div.index_blackname_left p:contains('¥')",
+                    "url":"a;href",
+                    "processor":"info"
+                }
+            ]
+        },
+        {
+            "index":"info",
+            "crawler_data": [
+                {
+                    "name": "span.mingdan_name",
+                    "card": "span.mingdan_zhengjian",
+                    "mobile":";html;手机</strong>([^\\s]+)",
+                    "qq":";html;QQ号码：</strong>([^\\s]+)",
+                    "huji":";html;户籍：</strong>([^\\s]+)",
+                    "home":";html;现居地：</strong>([^\\s]+)",
+                    "work_unit":";html;学校/公司：</strong>([^\\s]+)"
+                }
+            ]
+        }
+    ]
+}
