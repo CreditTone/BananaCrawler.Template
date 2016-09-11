@@ -1062,19 +1062,26 @@
         {
             "index": "result_processor",
             "page_context":{
-                "provinceName":["select#province;html;selected=\"\">([^<]+)"],
-                "bank":["select#bank;html;selected[^>]+>([^<]+)"]
+                "provinceName":["select#province;html;selected[^>]+>([^<]+)"],
+                "bankName":["select#bank;html;selected[^>]+>([^<]+)"]
             },
             "crawler_data": [
                 {
                     "_unique":["bankId"],
                     "_root": "div.tbdata tbody tr @array",
-                    "bank":"{{bank}}",
+                    "bankName":"{{bankName}}",
                     "bankId": "td @index=1",
-                    "bankName": "td @index=2",
+                    "branch": "td @index=2",
                     "phone": "td @index=3",
                     "address": "td @index=4",
                     "provinceName": "{{provinceName}}"
+                }
+            ],
+            "crawler_request":[
+                {
+                    "url":"a:contains('下一页');href",
+                    "priority": 3,
+                    "processor": "result_processor"
                 }
             ]
         }
