@@ -1254,7 +1254,7 @@
                     "icon": "icon",
                     "shopcard": "shopcard",
                     "catid": "{{cat}}",
-                    "_sendrequest": "shop_card"
+                    "_sendrequest": ["shop_card"]
                 }
             ],
             "crawler_request": [

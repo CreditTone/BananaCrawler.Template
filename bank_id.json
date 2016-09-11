@@ -1,0 +1,1080 @@
+{
+    "thread": 10,
+    "name": "taobaoshop",
+    "collection": "taobaoshoplist",
+    "filter": {
+        "type": "simple"
+    },
+    "seeds": [
+        {
+            "urls":[
+                "http://www.lianhanghao.com/area.php?act=ajax&id=1",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=2",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=3",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=4",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=5",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=6",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=7",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=8",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=9",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=10",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=11",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=12",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=13",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=14",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=15",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=16",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=17",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=18",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=19",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=20",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=21",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=22",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=23",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=24",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=25",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=26",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=27",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=28",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=29",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=30",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=31",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=32",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=33",
+                "http://www.lianhanghao.com/area.php?act=ajax&id=34"
+            ],
+            "processor": "city_code"
+        }
+    ],
+    "queue": {
+        "suport_priority": true
+    },
+    "processors": [
+        {
+            "index": "city_code",
+            "crawler_data":[
+                {
+                    "_type":"json",
+                    "_root":"city",
+                    "provinceId":"{{id}}",
+                    "cityId":"id",
+                    "cityName":"name",
+                    "_sendrequest":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71"]
+                }
+            ],
+            "crawler_request": [
+                {
+                    "_tag":"1",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"1",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"2",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"2",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"3",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"3",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"4",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"4",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"5",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"5",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"6",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"6",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"7",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"7",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"8",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"8",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"9",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"9",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"10",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"10",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"11",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"11",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"12",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"12",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"13",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"13",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"14",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"14",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"15",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"15",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"16",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"16",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"17",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"17",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"18",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"18",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"19",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"19",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"20",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"20",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"21",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"21",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"22",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"22",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"23",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"23",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"24",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"24",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"25",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"25",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"26",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"26",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"27",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"27",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"28",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"28",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"29",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"29",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"30",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"30",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"31",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"31",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"32",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"32",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"33",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"33",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"34",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"34",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"35",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"35",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"36",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"36",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"37",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"37",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"38",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"38",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"39",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"39",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"40",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"40",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"41",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"41",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"42",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"42",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"43",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"43",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"44",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"44",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"45",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"45",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"46",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"46",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"47",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"47",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"48",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"48",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"49",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"49",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"50",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"50",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"51",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"51",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"52",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"52",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"53",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"53",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"54",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"54",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"55",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"55",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"56",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"56",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"57",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"57",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"58",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"58",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"59",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"59",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"60",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"60",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"61",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"61",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"62",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"62",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"63",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"63",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"64",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"64",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"65",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"65",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"66",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"66",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"67",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"67",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"68",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"68",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"69",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"69",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"70",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"70",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                },
+                {
+                    "_tag":"71",
+                    "url": "http://www.lianhanghao.com/index.php{{_}}",
+                    "method":"post",
+                    "params":{
+                        "action":"find",
+                        "bank":"71",
+                        "city":"{{cityId}}",
+                        "key":"",
+                        "province":"{{id}}"
+                    },
+                    "priority": 2,
+                    "processor": "result_processor"
+                }
+            ]
+        },
+        {
+            "index": "result_processor",
+            "page_context":{
+                "provinceName":["select#province;html;selected=\"\">([^<]+)"]
+            },
+            "crawler_data": [
+                {
+                    "_unique":["bankId"],
+                    "_root": "div.tbdata tbody tr @array",
+                    "bankId": "td @index=1",
+                    "bankName": "td @index=2",
+                    "phone": "td @index=3",
+                    "address": "td @index=4",
+                    "provinceName": "{{provinceName}}"
+                }
+            ]
+        }
+    ]
+}
