@@ -1,7 +1,7 @@
 {
     "thread": 10,
-    "name": "taobaoshop",
-    "collection": "taobaoshoplist",
+    "name": "bankcrawler",
+    "collection": "banklist",
     "filter": {
         "type": "simple"
     },
