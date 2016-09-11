@@ -1062,12 +1062,14 @@
         {
             "index": "result_processor",
             "page_context":{
-                "provinceName":["select#province;html;selected=\"\">([^<]+)"]
+                "provinceName":["select#province;html;selected=\"\">([^<]+)"],
+                "bank":["select#bank;html;selected[^>]+>([^<]+)"]
             },
             "crawler_data": [
                 {
                     "_unique":["bankId"],
                     "_root": "div.tbdata tbody tr @array",
+                    "bank":"{{bank}}",
                     "bankId": "td @index=1",
                     "bankName": "td @index=2",
                     "phone": "td @index=3",
