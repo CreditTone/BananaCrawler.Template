@@ -1261,7 +1261,7 @@
                 {
                     "_condition": "{{gt n 100 currentPage}}",
                     "_type": "json",
-                    "url": "{{fixKey n _current_url \"s\" \"loc\"}}&loc=江苏%2C浙江%2C上海&s={{multiply n 60 currentPage}}",
+                    "url": "{{fixKey n _current_url \"s\" \"loc\" \"filter_tianmao\"}}&filter_tianmao=tmall&loc=江苏%2C浙江%2C上海&s={{multiply n 60 currentPage}}",
                     "processor": "hy_shop",
                     "priority": 1
                 },
