@@ -1,0 +1,107 @@
+{
+    "thread": 10,
+    "name": "taobaoshop",
+    "collection": "taobaoshoplist",
+    "filter": {
+        "type": "simple"
+    },
+    "seeds": [
+        {
+           "urls":[
+                "https://www.taobao.com/markets/tbhome/market-list",
+                "https://www.taobao.com/markets/paimai/ali2car?spm=a21bo.50862.201867-links-12.34.ZvscXt",
+                "https://car.tmall.com/?spm=a21bo.50862.201867-links-12.1.VR8Xtl",
+                "https://www.taobao.com/markets/quan/home?spm=a21bo.50862.201867-links-15.29.VR8Xtl&pvid=2ad9e786-29ed-4800-9103-c08f1e82d2ef",
+                "https://life.taobao.com/?spm=a21bo.50862.201867-links-15.47.VR8Xtl&pvid=2ad9e786-29ed-4800-9103-c08f1e82d2ef"
+           ],
+           "processor":"hy_p"
+        }
+    ],
+    "queue": {
+        "suport_priority": true
+    },
+    "processors": [
+        {
+            "index": "hy_p",
+            "crawler_request": [
+                {
+                    "_type": "string",
+                    "_root": "<a[^>]+cat\\=\\d+[^>]+>[^<]+<",
+                    "url": "href=\"([^\"]+)\"",
+                    "priority": 1,
+                    "processor": "hy_shop"
+                },
+                {
+                    "_type": "string",
+                    "_root": "<a[^>]+s.taobao.com[^>]+q\\=[^>]+>[^<]+<",
+                    "url": "href=\"([^\"]+)\"",
+                    "priority": 1,
+                    "processor": "hy_shop"
+                }
+            ]
+        },
+        {
+            "index": "hy_shop",
+            "content_prepare": {
+                "direct": [
+                    "_string",
+                    "g_page_config =(\\s*\\{.*);\\s*g_srp_load"
+                ]
+            },
+            "page_context": {
+                "currentPage": [
+                    "_json",
+                    "mods.pager.data.currentPage"
+                ]
+            },
+            "crawler_data": [
+                {
+                    "_unique": [
+                        "userid"
+                    ],
+                    "_type": "json",
+                    "_root": "mods.itemlist.data.auctions",
+                    "nick": "nick",
+                    "location": "item_loc",
+                    "shopLink": "shopLink",
+                    "userid": "user_id",
+                    "icon": "icon",
+                    "shopcard": "shopcard",
+                    "catid": "{{cat}}",
+                    "_sendrequest": ["shop_card"]
+                }
+            ],
+            "crawler_request": [
+                {
+                    "_condition": "{{gt n 100 currentPage}}",
+                    "_type": "json",
+                    "url": "{{fixKey n _url \"s\"}}&s={{multiply n 60 currentPage}}",
+                    "processor": "hy_shop",
+                    "priority": 1
+                },
+                {
+                    "_tag": "shop_card",
+                    "url": "https://s.taobao.com/api?sid={{userid}}&callback=shopcard&app=api&m=get_shop_card",
+                    "processor": "hy_shopcard",
+                    "priority": 2
+                }
+            ]
+        },
+        {
+            "index": "hy_shopcard",
+            "crawler_data": [
+                {
+                    "_type": "json",
+                    "industry": "industry",
+                    "ratesum": "ratesum",
+                    "isTmall": "isTmall",
+                    "isQiye": "isQiye",
+                    "shopName": "title",
+                    "encryptedUserId": "encryptedUserId",
+                    "openYears": "openYears",
+                    "openYearsText": "openYearsText"
+                }
+            ]
+        }
+    ]
+}
