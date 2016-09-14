@@ -1,0 +1,87 @@
+{
+    "thread": 10,
+    "name": "jdshop",
+    "collection": "jdshoplist",
+    "filter": {
+        "type": "simple"
+    },
+    "seeds": [
+        {
+           "url_iterator":{
+                "for":"{{for n \"number\" 10000 1000000}}",
+                "url":"http://mall.jd.com/shopLevel-{{number}}.html?number={{number}}"
+            },
+           "processor":"jd_rate"
+        }
+    ],
+    "queue": {
+        "suport_priority": true
+    },
+    "processors": [
+        {
+            "index": "jd_rate",
+            "page_context":{
+                "shopName":[".j-shop-name"]
+            },
+            "crawler_data":[
+                {
+                    "_unique": ["shopId"],
+                    "shopName":"{{shopName}}",
+                    "shopId":"{{number}}",
+                    "location":";html;所在地：</span>\\s*<span class=\"value\">([^<]+)<",
+                    "licence":"http://mall.jd.com/showLicence-{{number}}.html",
+                    "shopTotalScore":".total-score-num",
+                    "shopTotalPercent":".total-score .score-des .percent",
+                    "shopCompare":";html;class=\"total-score-view\\s*([\\w]+)\\s*\"",
+                    "180天内店铺动态评分": {
+                        "商品质量满意度": {
+                            "_root": ".item-180:contains('商品质量满意度')",
+                            "分数": ".score-180",
+                            "与同行业平均水平": ".percent"
+                        },
+                        "服务态度满意度": {
+                            "_root": ".item-180:contains('服务态度满意度')",
+                            "分数": ".score-180",
+                            "与同行业平均水平": ".percent"
+                        },
+                        "物流速度满意度": {
+                            "_root": ".item-180:contains('物流速度满意度')",
+                            "分数": ".score-180",
+                            "与同行业平均水平": ".percent"
+                        },
+                        "商品描述满意度": {
+                            "_root": ".item-180:contains('商品描述满意度')",
+                            "分数": ".score-180",
+                            "与同行业平均水平": ".percent"
+                        },
+                        "退换货处理满意度": {
+                            "_root": ".item-180:contains('退换货处理满意度')",
+                            "分数": ".score-180",
+                            "与同行业平均水平": ".percent"
+                        }
+                    },
+                    "90天内平台监控店铺服务": {
+                        "售后处理时长": {
+                            "_root": ".item-90:contains('售后处理时长')",
+                            "本店": ".f16 @index=0",
+                            "比较结果": ".result",
+                            "行业平均值": ".f16 @index=1"
+                        },
+                        "交易纠纷率": {
+                            "_root": ".item-90:contains('交易纠纷率')",
+                            "本店": ".f16 @index=0",
+                            "比较结果": ".result",
+                            "行业平均值": ".f16 @index=1"
+                        },
+                        "退换货返修率": {
+                            "_root": ".item-90:contains('退换货返修率')",
+                            "本店": ".f16 @index=0",
+                            "比较结果": ".result",
+                            "行业平均值": ".f16 @index=1"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
