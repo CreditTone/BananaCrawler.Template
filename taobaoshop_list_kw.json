@@ -85,10 +85,8 @@
                 "currentPage": [
                     "_json",
                     "mods.pager.data.currentPage"
-                ]
-            },
-            "crawler_data": [
-                {
+                ],
+                "auctions":{
                     "_unique": [
                         "userid"
                     ],
@@ -100,10 +98,9 @@
                     "userid": "user_id",
                     "icon": "icon",
                     "shopcard": "shopcard",
-                    "catid": "{{cat}}",
-                    "_sendrequest": ["shop_card"]
+                    "catid": "{{cat}}"
                 }
-            ],
+            },
             "crawler_request": [
                 {
                     "_condition": "{{gt n 100 currentPage}}",
@@ -113,7 +110,10 @@
                     "priority": 3
                 },
                 {
-                    "_tag": "shop_card",
+                    "_datacontext": {
+                        "key":"auctions",
+                        "data_flow":true
+                    },
                     "url": "https://s.taobao.com/api?sid={{userid}}&callback=shopcard&app=api&m=get_shop_card",
                     "processor": "hy_shopcard",
                     "priority": 4
