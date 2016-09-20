@@ -7,7 +7,7 @@
     },
     "seeds": [
         {
-            "processor": "hy_shop",
+            "processor": "product_shop",
             "urls": 
             [
     "https://s.taobao.com/list?cat=54132002",
@@ -1472,21 +1472,35 @@
     },
     "processors": [
         {
-            "index": "hy_p",
+            "index": "product_shop",
+            "content_prepare": {
+                "direct": [
+                    "_string",
+                    "g_page_config =(\\s*\\{.*);\\s*g_srp_load"
+                ]
+            },
+            "page_context": {
+                "product_param":{
+                    "_type": "json",
+                    "_root": "mods.nav.data.common.[*].sub",
+                    "product_key": "key",
+                    "product_value": "value"
+                }
+            },
             "crawler_request": [
                 {
-                    "_type": "string",
-                    "_root": "<a[^>]+cat\\=\\d+[^>]+>[^<]+<",
-                    "url": "href=\"([^\"]+)\"",
-                    "priority": 1,
-                    "processor": "hy_shop"
+                    "_datacontext": {
+                        "key":"product_param",
+                        "data_flow":false
+                    },
+                    "url":"{{fixKey n _url product_key}}&{{product_key}}={{product_value}}",
+                    "processor": "hy_shop",
+                    "priority": 2
                 },
                 {
-                    "_type": "string",
-                    "_root": "<a[^>]+s.taobao.com[^>]+q\\=[^>]+>[^<]+<",
-                    "url": "href=\"([^\"]+)\"",
-                    "priority": 1,
-                    "processor": "hy_shop"
+                     "url":"{{_url}}",
+                    "processor": "hy_shop",
+                    "priority": 2
                 }
             ]
         },
@@ -1502,10 +1516,8 @@
                 "currentPage": [
                     "_json",
                     "mods.pager.data.currentPage"
-                ]
-            },
-            "crawler_data": [
-                {
+                ],
+                "auctions":{
                     "_unique": [
                         "userid"
                     ],
@@ -1517,23 +1529,25 @@
                     "userid": "user_id",
                     "icon": "icon",
                     "shopcard": "shopcard",
-                    "catid": "{{cat}}",
-                    "_sendrequest": ["shop_card"]
+                    "catid": "{{cat}}"
                 }
-            ],
+            },
             "crawler_request": [
                 {
                     "_condition": "{{gt n 100 currentPage}}",
                     "_type": "json",
                     "url": "{{fixKey n _url \"s\"}}&s={{multiply n 60 currentPage}}",
                     "processor": "hy_shop",
-                    "priority": 1
+                    "priority": 3
                 },
                 {
-                    "_tag": "shop_card",
+                    "_datacontext": {
+                        "key":"auctions",
+                        "data_flow":true
+                    },
                     "url": "https://s.taobao.com/api?sid={{userid}}&callback=shopcard&app=api&m=get_shop_card",
                     "processor": "hy_shopcard",
-                    "priority": 2
+                    "priority": 4
                 }
             ]
         },
