@@ -1500,7 +1500,7 @@
                 {
                      "url":"{{_url}}",
                     "processor": "hy_shop",
-                    "priority": 2
+                    "priority": 1
                 }
             ]
         },

@@ -29,14 +29,47 @@
                     "_root": "<a[^>]+cat\\=\\d+[^>]+>[^<]+<",
                     "url": "href=\"([^\"]+)\"",
                     "priority": 1,
-                    "processor": "hy_shop"
+                    "processor": "product_shop"
                 },
                 {
                     "_type": "string",
                     "_root": "<a[^>]+s.taobao.com[^>]+q\\=[^>]+>[^<]+<",
                     "url": "href=\"([^\"]+)\"",
                     "priority": 1,
-                    "processor": "hy_shop"
+                    "processor": "product_shop"
+                }
+            ]
+        },
+        {
+            "index": "product_shop",
+            "content_prepare": {
+                "direct": [
+                    "_string",
+                    "g_page_config =(\\s*\\{.*);\\s*g_srp_load"
+                ]
+            },
+            "page_context": {
+                "product_param":{
+                    "_type": "json",
+                    "_root": "mods.nav.data.common.[*].sub",
+                    "product_key": "key",
+                    "product_value": "value"
+                }
+            },
+            "crawler_request": [
+                {
+                    "_datacontext": {
+                        "key":"product_param",
+                        "data_flow":false
+                    },
+                    "url":"{{fixKey n _url product_key}}&{{product_key}}={{product_value}}",
+                    "processor": "hy_shop",
+                    "priority": 2
+                },
+                {
+                     "url":"{{_url}}",
+                    "processor": "hy_shop",
+                    "priority": 2
                 }
             ]
         },
@@ -77,13 +110,13 @@
                     "_type": "json",
                     "url": "{{fixKey n _url \"s\"}}&s={{multiply n 60 currentPage}}",
                     "processor": "hy_shop",
-                    "priority": 1
+                    "priority": 3
                 },
                 {
                     "_tag": "shop_card",
                     "url": "https://s.taobao.com/api?sid={{userid}}&callback=shopcard&app=api&m=get_shop_card",
                     "processor": "hy_shopcard",
-                    "priority": 2
+                    "priority": 4
                 }
             ]
         },
