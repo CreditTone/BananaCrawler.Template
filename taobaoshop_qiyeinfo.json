@@ -1,0 +1,62 @@
+{
+    "thread": 10,
+    "name": "taobaoshop",
+    "collection": "taobaoshoplist",
+    "filter": {
+        "type": "simple"
+    },
+    "seed_generator":{
+        "keep":true,
+        "find":{
+            "ref":{"isQiye":"1"},
+            "keys":{"userid":1,"_link":1},
+            "limit":1000
+        },
+        "url":"{{_link}}",
+        "processor": "shopcard"
+    },
+    "queue": {
+        "suport_priority": true
+    },
+    "processors": [
+        {
+            "index": "shopcard",
+            "page_context": {
+                "shopcard_data":{
+                    "_type":"json",
+                    "shopUrl":"url"
+                }
+            },
+            "crawler_request": [
+                {
+                    "_datacontext": {
+                        "key":"shopcard_data",
+                        "data_flow": true
+                    },
+                    "url":"{{shopUrl}}/company.htm",
+                    "processor": "py_company",
+                    "priority": 2
+                }
+            ]
+        },
+        {
+            "index": "py_company",
+            "crawler_data": [
+                {
+                    "_update":{
+                        "index":"userid",
+                        "value":"{{userid}}"
+                    },
+                    "shopId": ";html;shopId\":\"(\\d+)",
+                    "sellerBail": ".tb-seller-bail",
+                    "createDate": ";html;创店时间：([^<]+)",
+                    "credite": ";html;卖家信用：(\\d+)",
+                    "business": ";html;经营类型：([^<]+)",
+                    "license": ";html;营业执照注册号：([^<]+)",
+                    "phone":";html;联系电话：([^<]+)<",
+                    "profile":".archive-main:contains('公司简介') div[class='bd clearfix']"
+                }
+            ]
+        }
+    ]
+}
