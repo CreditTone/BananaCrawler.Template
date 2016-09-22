@@ -97,8 +97,7 @@
                     "shopLink": "shopLink",
                     "userid": "user_id",
                     "icon": "icon",
-                    "shopcard": "shopcard",
-                    "catid": "{{cat}}"
+                    "shopcard": "shopcard"
                 }
             },
             "crawler_request": [
@@ -132,7 +131,16 @@
                     "shopName": "title",
                     "encryptedUserId": "encryptedUserId",
                     "openYears": "openYears",
-                    "openYearsText": "openYearsText"
+                    "openYearsText": "openYearsText",
+                    "dsr":{
+                        "favorableRate":"favorableRate",
+                        "matchDescription":"matchDescription",
+                        "serviceAttitude":"serviceAttitude",
+                        "deliverySpeed":"deliverySpeed",
+                        "descriptionCompared":"descriptionCompared",
+                        "attitudeCompared":"attitudeCompared",
+                        "deliveryCompared":"deliveryCompared"
+                    }
                 }
             ]
         }
