@@ -1,5 +1,5 @@
 {
-    "thread": 10,
+    "thread": 5,
     "name": "taobaoqiyeinfo",
     "collection": "taobaoshoplist",
     "filter": {
