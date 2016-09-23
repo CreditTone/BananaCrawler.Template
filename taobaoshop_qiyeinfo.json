@@ -10,7 +10,8 @@
         "find": {
             "ref": {
                 "isQiye": "1",
-                "licenseNumber" : { "$exists" : false}
+                "crawlCompany" : { "$exists" : false},
+                "shopClose" : { "$exists" : false}
             },
             "keys": {
                 "userid": 1,
@@ -18,7 +19,7 @@
             },
             "limit": 1000
         },
-        "url": "{{_link}}",
+        "url": "https://s.taobao.com/api?sid={{userid}}&callback=shopcard&app=api&m=get_shop_card",
         "processor": "shopcard"
     },
     "queue": {
@@ -44,6 +45,7 @@
             },
             "crawler_request": [
                 {
+                    "_condition":"{{existKey n \"shopcard_data.shopUrl\"}}",
                     "_datacontext": {
                         "key": "shopcard_data",
                         "data_flow": true
@@ -51,6 +53,15 @@
                     "url": "{{shopUrl}}/company.htm",
                     "processor": "py_company",
                     "priority": 2
+                }
+            ],
+            "crawler_data":[
+                {
+                    "_condition":"{{isEmpty n \"shopcard_data.shopUrl\"}}",
+                    "_update": {
+                        "userid": "{{userid}}"
+                    },
+                    "shopClose":"true{{nil}}"
                 }
             ]
         },
@@ -68,7 +79,8 @@
                     "businessType": ";html;经营类型：([^<]+)",
                     "licenseNumber": ";html;营业执照注册号：([^<]+)",
                     "phone": ";html;联系电话：([^<]+)<",
-                    "profile": ".archive-main:contains('公司简介') div[class='bd clearfix']"
+                    "profile": ".archive-main:contains('公司简介') div[class='bd clearfix']",
+                    "crawlCompany":"true{{nil}}"
                 }
             ]
         }
