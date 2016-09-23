@@ -17,7 +17,7 @@
                 "userid": 1,
                 "_link": 1
             },
-            "limit": 1000
+            "limit": 5000
         },
         "url": "https://s.taobao.com/api?sid={{userid}}&callback=shopcard&app=api&m=get_shop_card",
         "processor": "shopcard"
