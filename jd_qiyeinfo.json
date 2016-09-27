@@ -17,7 +17,7 @@
             },
             "limit": 5000
         },
-        "url": "http://127.0.0.1:8001/submit?tmpl=jd_licence&licence={{licence}}",
+        "url": "http://crawler.jisucloud.cn/submit?tmpl=jd_licence&licence={{licence}}",
         "processor": "qiyeinfo"
     },
     "queue": {
@@ -33,7 +33,7 @@
                 {
                     "_condition":"{{existKey n \"licenceId\"}}",
                     "_update": {
-                        "userid": "{{userid}}"
+                        "shopId": "{{shopId}}"
                     },
                     "companyName": "li.noBorder:contains('企业名称') span",
                     "licenceId": "{{licenceId}}",
@@ -41,14 +41,14 @@
                     "capital": "li.noBorder:contains('企业注册资金') span",
                     "licenceDeadline": "li.noBorder:contains('营业执照有效期') span",
                     "businessScope": "li.noBorder:contains('营业执照经营范围') span",
-                    "companyName": "li.noBorder:contains('公司地址') span",
+                    "companyAddr": "li.noBorder:contains('公司地址') span",
                     "crawlCompany":"true{{nil}}"
                 }
             ],
             "crawler_request":[
                 {
                     "_condition":"{{isEmpty n \"licenceId\"}}",
-                    "url":"http://127.0.0.1:8001/submit?tmpl=jd_licence&licence={{licence}}",
+                    "url":"http://crawler.jisucloud.cn/submit?tmpl=jd_licence&licence={{licence}}",
                     "processor": "qiyeinfo",
                     "priority": 2
                 }
