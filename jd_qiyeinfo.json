@@ -1,0 +1,58 @@
+{
+    "thread": 5,
+    "name": "jdqiyeinfo",
+    "collection": "jdshoplist",
+    "filter": {
+        "type": "simple"
+    },
+    "seed_generator": {
+        "keep": true,
+        "find": {
+            "ref": {
+                "crawlCompany" : { "$exists" : false}
+            },
+            "keys": {
+                "shopId": 1,
+                "licence": 1
+            },
+            "limit": 5000
+        },
+        "url": "http://127.0.0.1:8001/submit?tmpl=jd_licence&licence={{licence}}",
+        "processor": "qiyeinfo"
+    },
+    "queue": {
+        "suport_priority": true
+    },
+    "processors": [
+        {
+            "index": "qiyeinfo",
+            "page_context":{
+                "licenceId":["li.noBorder:contains('营业执照注册号') span"]
+            },
+            "crawler_data": [
+                {
+                    "_condition":"{{existKey n \"licenceId\"}}",
+                    "_update": {
+                        "userid": "{{userid}}"
+                    },
+                    "companyName": "li.noBorder:contains('企业名称') span",
+                    "licenceId": "{{licenceId}}",
+                    "legalPerson": "li.noBorder:contains('法定代表人姓名') span",
+                    "capital": "li.noBorder:contains('企业注册资金') span",
+                    "licenceDeadline": "li.noBorder:contains('营业执照有效期') span",
+                    "businessScope": "li.noBorder:contains('营业执照经营范围') span",
+                    "companyName": "li.noBorder:contains('公司地址') span",
+                    "crawlCompany":"true{{nil}}"
+                }
+            ],
+            "crawler_request":[
+                {
+                    "_condition":"{{isEmpty n \"licenceId\"}}",
+                    "url":"http://127.0.0.1:8001/submit?tmpl=jd_licence&licence={{licence}}",
+                    "processor": "qiyeinfo",
+                    "priority": 2
+                }
+            ]
+        }
+    ]
+}
