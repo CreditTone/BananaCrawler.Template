@@ -43,14 +43,13 @@
                     "businessScope": "li.noBorder:contains('营业执照经营范围') span",
                     "companyAddr": "li.noBorder:contains('公司地址') span",
                     "crawlCompany":"true{{nil}}"
-                }
-            ],
-            "crawler_request":[
+                },
                 {
-                    "_condition":"{{isEmpty n \"licenceId\"}}",
-                    "url":"http://crawler.jisucloud.cn/submit?tmpl=jd_licence&licence={{licence}}",
-                    "processor": "qiyeinfo",
-                    "priority": 2
+                     "_condition":"{{containString n \"www.jd.com/error.aspx\"}}",
+                     "_update": {
+                        "shopId": "{{shopId}}"
+                    },
+                    "crawlCompany":"true{{nil}}"
                 }
             ]
         }
