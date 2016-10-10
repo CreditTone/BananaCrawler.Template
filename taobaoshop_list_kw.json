@@ -62,7 +62,7 @@
                         "key":"product_param",
                         "data_flow":false
                     },
-                    "url":"{{fixKey n _url product_key \"filter_tianmao\"}}&{{product_key}}={{product_value}}&filter_tianmao=tmall",
+                    "url":"{{fixKey n _url product_key}}&{{product_key}}={{product_value}}",
                     "processor": "hy_shop",
                     "priority": 2
                 },
