@@ -94,7 +94,6 @@
                     "_root": "mods.itemlist.data.auctions",
                     "nick": "nick",
                     "location": "item_loc",
-                    "shopLink": "shopLink",
                     "userid": "user_id",
                     "icon": "icon",
                     "shopcard": "shopcard"
@@ -125,6 +124,7 @@
                 {
                     "_type": "json",
                     "industry": "industry",
+                    "shopUrl": "url",
                     "ratesum": "ratesum",
                     "isTmall": "isTmall",
                     "isQiye": "isQiye",
