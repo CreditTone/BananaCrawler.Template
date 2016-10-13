@@ -11,15 +11,17 @@
             "ref": {
                 "isQiye": "1",
                 "crawlCompany" : { "$exists" : false},
+                "shopUrl" : { "$exists" : true},
                 "shopClose" : { "$exists" : false}
             },
             "keys": {
                 "userid": 1,
+                "shopUrl": 1,
                 "_link": 1
             },
             "limit": 5000
         },
-        "url": "https://s.taobao.com/api?sid={{userid}}&callback=shopcard&app=api&m=get_shop_card",
+        "url": "https:{{shopUrl}}",
         "processor": "shopcard"
     },
     "queue": {
@@ -29,35 +31,19 @@
         {
             "index": "shopcard",
             "page_context": {
-                "shopcard_data": {
-                    "_type": "json",
-                    "shopUrl": "url",
-                    "dsr":{
-                        "favorableRate":"favorableRate",
-                        "matchDescription":"matchDescription",
-                        "serviceAttitude":"serviceAttitude",
-                        "deliverySpeed":"deliverySpeed",
-                        "descriptionCompared":"descriptionCompared",
-                        "attitudeCompared":"attitudeCompared",
-                        "deliveryCompared":"deliveryCompared"
-                    }
-                }
+                "xid":["_string","xid=([^\"]+)"]
             },
             "crawler_request": [
                 {
-                    "_condition":"{{existKey n \"shopcard_data.shopUrl\"}}",
-                    "_datacontext": {
-                        "key": "shopcard_data",
-                        "data_flow": true
-                    },
-                    "url": "{{shopUrl}}/company.htm",
+                    "_condition":"{{existKey n \"xid\"}}",
+                    "url": "http://crawler.jisucloud.cn/submit?tmpl=ali_licence&licence={{xid}}",
                     "processor": "py_company",
                     "priority": 2
                 }
             ],
             "crawler_data":[
                 {
-                    "_condition":"{{isEmpty n \"shopcard_data.shopUrl\"}}",
+                    "_condition":"{{isEmpty n \"xid\"}}",
                     "_update": {
                         "userid": "{{userid}}"
                     },
@@ -67,6 +53,29 @@
         },
         {
             "index": "py_company",
+            "page_context":{
+                "licenseNumber":["tr:contains('营业执照注册号或统一信用代码') td"],
+                "qiyeInfo": {
+                    "licenseNumber": "tr:contains('营业执照注册号或统一信用代码') td",
+                    "legalPerson":"tr:contains('法定代表人') td",
+                    "companyName": ";html;企业名称</th>\\s*<td>([^<]+)"
+                }
+            },
+            "crawler_request": [
+                {
+                    "_datacontext": {
+                        "key":"qiyeInfo",
+                        "data_flow":true
+                    },
+                    "_condition":"{{existKey n \"licenseNumber\"}}",
+                    "url": "https:{{shopUrl}}/company.htm",
+                    "processor": "py_company2",
+                    "priority": 4
+                }
+            ]
+        },
+        {
+            "index": "py_company2",
             "crawler_data": [
                 {
                     "_update": {
@@ -77,7 +86,6 @@
                     "createShop": ";html;创店时间：([^<]+)",
                     "credite": ";html;卖家信用：(\\d+)",
                     "businessType": ";html;经营类型：([^<]+)",
-                    "licenseNumber": ";html;营业执照注册号：([^<]+)",
                     "phone": ";html;联系电话：([^<]+)<",
                     "profile": ".archive-main:contains('公司简介') div[class='bd clearfix']",
                     "crawlCompany":"true{{nil}}"
