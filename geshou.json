@@ -8,7 +8,9 @@
     "seeds": [
         {
            "urls":[
-                "http://www.kuwo.cn/artist/indexAjax?category=4&prefix=&pn=0"
+                "http://www.kuwo.cn/artist/indexAjax?category=4&prefix=&pn=0",
+                "http://www.kuwo.cn/artist/indexAjax?category=5&prefix=&pn=0",
+                "http://www.kuwo.cn/artist/indexAjax?category=6&prefix=&pn=0",
            ],
            "processor":"zuozhe"
         }
@@ -60,6 +62,7 @@
                     "musicUrl": "div.name a;href",
                     "musicId":"div.name a;href;(\\d+)",
                     "music":"div.name a",
+                    "zuozhe":"div.artist",
                     "artistId":"{{artistId}}"
                 }
             ]
