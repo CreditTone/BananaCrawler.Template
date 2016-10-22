@@ -1,0 +1,68 @@
+{
+    "thread": 1,
+    "name": "music",
+    "collection": "music",
+    "filter": {
+        "type": "simple"
+    },
+    "seeds": [
+        {
+           "urls":[
+                "http://www.kuwo.cn/artist/indexAjax?category=4&prefix=&pn=0"
+           ],
+           "processor":"zuozhe"
+        }
+    ],
+    "queue": {
+        "suport_priority": true
+    },
+    "processors": [
+        {
+            "index": "zuozhe",
+            "crawler_request": [
+                {
+                    "_root": "ul.artistBox li",
+                    "url":"a[class='a_name'];href",
+                    "processor": "zuozhe2",
+                    "priority": 2
+                },
+                {
+                    "_condition":"{{gt n 351 pn}}",
+                    "url": "{{fixKey n _url \"pn\"}}&pn={{add n pn 1}}",
+                    "processor": "zuozhe",
+                    "priority": 1
+                }
+            ]
+        },
+        {
+            "index": "zuozhe2",
+            "page_context": {
+                "country":[";html;国籍：\\s*([^<]+)<"],
+                "artistId":["div.artistTop;data-artistid"]
+            },
+            "crawler_request": [
+                {
+                    "_condition":"{{eq n country \"日本\"}}",
+                     "url":"http://www.kuwo.cn/artist/contentMusicsAjax?artistId={{artistId}}&pn=0&rn=20000",
+                    "processor": "contentMusicsAjax",
+                    "priority": 3
+                }
+            ]
+        },
+        {
+            "index": "contentMusicsAjax",
+            "crawler_data": [
+                {
+                    "_unique": [
+                        "musicId"
+                    ],
+                    "_root":"li.onLine",
+                    "musicUrl": "div.name a;href",
+                    "musicId":"div.name a;href;(\\d+)",
+                    "music":"div.name a",
+                    "artistId":"{{artistId}}"
+                }
+            ]
+        }
+    ]
+}
