@@ -1,0 +1,44 @@
+{
+    "thread": 1,
+    "name": "musicDownloader",
+    "collection": "music",
+    "filter": {
+        "type": "simple"
+    },
+    "seed_generator": {
+        "find": {
+            "ref": {
+                "crawled": {
+                    "$exists":false
+                }
+            },
+            "limit": 1000
+        },
+        "url": "http://antiserver.kuwo.cn/anti.s?response=url&rid=MUSIC%5F{{musicId}}&format=aac%7Cmp3&type=convert%5Furl",
+        "processor": "anti"
+    },
+    "queue": {
+        "suport_priority": true
+    },
+    "processors": [
+        {
+            "index": "anti",
+            "crawler_request": [
+                {
+                    "_type":"string",
+                    "download": ".*",
+                    "processor": "def",
+                    "priority": 2
+                }
+            ],
+            "crawler_data":[
+                {
+                    "_update": {
+                        "musicId": "{{musicId}}"
+                    },
+                    "crawled":"true{{nil}}"
+                }
+            ]
+        }
+    ]
+}
