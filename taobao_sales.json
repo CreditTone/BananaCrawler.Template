@@ -1,0 +1,124 @@
+{
+    "thread": 1,
+    "name": "taobaosales",
+    "collection": "taobaosales",
+    "filter": {
+        "type": "simple"
+    },
+    "seed_query": {
+        "keep": false,
+        "find": {
+            "sql":"select * from user_account where user_id in (select user_id from loan_application where status=222 and channel!='test') and platform_id=1 limit 2"
+        },
+        "url": "http://crawler.jisucloud.cn/submit?tmpl=tbshop_search&sellername={{account_name}}",
+        "processor": "shop-search"
+    },
+    "queue": {
+        "suport_priority": true
+    },
+    "processors": [
+        {
+           "index": "shop-search",
+            "page_context": {
+                "uid":["_string","user_id=(\\d+)"]
+            },
+            "crawler_request": [
+                {
+                    "_condition":"{{existKey n \"uid\"}}",
+                    "url":"https://store.taobao.com/shop/view_shop.htm?user_number_id={{uid}}&search=y",
+                    "processor":"search-perpare",
+                    "priority": 2
+                }
+            ],
+            "crawler_data":[
+                {
+                    "shopName":"{{shopname}}",
+                    "userid":"{{uid}}",
+                    "shopClose":"{{isEmpty n \"uid\"}}"
+                }
+            ]
+        },
+        {
+            "index": "search-perpare",
+            "page_context": {
+                "searchUrl":[";html;//([^/]+)/category"],
+                "wid":["_string","wid=(\\d+)"]
+            },
+            "crawler_request": [
+                {
+                    "url":"https://{{searchUrl}}/{{searchUrl}}/search.htm?callback=jsonp316&mid=w-{{wid}}-0&wid={{wid}}&path=/search.htm&search=y&pageNo=1",
+                    "processor":"product-list",
+                    "priority": 2
+                }
+            ]
+        },
+        {
+            "index": "product-list",
+            "page_context":{
+                "userId":[";html;userId=(\\d+)"],
+                "products":{
+                    "_root":"dl.item",
+                    "title":"dd.detail a",
+                    "itemId":";data-id"
+                }
+            },
+            "crawler_request": [
+                {
+                    "_datacontext": {
+                        "key":"products",
+                        "data_flow":true
+                    },
+                    "_condition":"{{existKey n \"itemId\"}}",
+                    "url": "https://detailskip.taobao.com/service/getData/1/p1/item/detail/sib.htm?itemId={{itemId}}&sellerId={{userId}}&modules=dynStock,qrcode,viewer,price,contract,duty,xmpPromotion,delivery,sellerDetail,activity,fqg,zjys,coupon,couponActivity,soldQuantity&callback=onSibRequestSuccess",
+                    "headers":{
+                        "Host":"detailskip.taobao.com",
+                        "Referer":"https://item.taobao.com/item.htm?spm=a1z10.3-c-s.w4002-14938072742.18.ETzYzM&id=521816803813"
+                    },
+                    "processor": "itemPro",
+                    "priority": 3
+                },
+                {
+                    "url": "a[class='J_SearchAsync next'];href",
+                    "processor": "product-list",
+                    "priority": 2
+                }
+            ]
+        },
+        {
+            "index": "itemPro",
+            "page_context":{
+                "xiaoliang":{
+                    "_type":"json",
+                    "price": "data.price",
+                    "promotion": "data.promotion",
+                    "soldQuantity": "data.soldQuantity",
+                    "userId":"{{sellerId}}"
+                }
+            },
+            "crawler_request": [
+                {
+                   "_datacontext": {
+                        "key":"xiaoliang",
+                        "data_flow":true
+                    },
+                    "_condition":"{{existKey n \"price\"}}",
+                    "url":"https://count.taobao.com/counter3?callback=jsonp87&keys=ICCP_1_{{itemId}}",
+                    "headers":{
+                        "Host":"count.taobao.com"
+                    },
+                    "priority": 4,
+                    "processor":"itemPro2"
+                }
+            ]
+        },
+        {
+            "index":"itemPro2",
+            "crawler_data":[
+                {
+                    "_type":"string",
+                    "iccp":"(\\d+)\\}"
+                }
+            ]
+        }
+    ]
+}

@@ -5,7 +5,7 @@
     "filter": {
         "type": "simple"
     },
-    "seed_generator": {
+    "seed_query": {
         "keep": true,
         "find": {
             "ref": {

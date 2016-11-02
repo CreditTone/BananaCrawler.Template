@@ -5,7 +5,7 @@
     "filter": {
         "type": "simple"
     },
-    "seed_generator": {
+    "seed_query": {
         "find": {
             "ref": {
                 "crawled": {
