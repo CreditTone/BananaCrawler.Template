@@ -13,6 +13,10 @@
         "url": "http://crawler.jisucloud.cn/submit?tmpl=tbshop_search&sellername={{account_name}}",
         "processor": "shop-search"
     },
+    "timer":{
+        "first_start":"{{date n \"yyyy-MM-dd\"}} 01:00:00",
+        "period":"24h"
+    },
     "queue": {
         "suport_priority": true
     },
@@ -92,7 +96,7 @@
                     "price": "data.price",
                     "promotion": "data.promotion",
                     "soldQuantity": "data.soldQuantity",
-                    "userId":"{{sellerId}}"
+                    "userid":"{{sellerId}}"
                 }
             },
             "crawler_request": [
