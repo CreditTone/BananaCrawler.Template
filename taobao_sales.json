@@ -8,13 +8,13 @@
     "seed_query": {
         "keep": false,
         "find": {
-            "sql":"select * from user_account where user_id in (select user_id from loan_application where status=222 and channel!='test') and platform_id=1 limit 2"
+            "sql":"select * from user_account where user_id in (select user_id from loan_application where status=222 and channel!='test') and platform_id=1"
         },
         "url": "http://crawler.jisucloud.cn/submit?tmpl=tbshop_search&sellername={{account_name}}",
         "processor": "shop-search"
     },
     "timer":{
-        "first_start":"{{date n \"yyyy-MM-dd\"}} 01:00:00",
+        "first_start":"now",
         "period":"24h"
     },
     "queue": {
