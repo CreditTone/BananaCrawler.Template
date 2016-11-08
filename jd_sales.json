@@ -1,0 +1,76 @@
+{
+    "thread": 1,
+    "name": "jdsales",
+    "collection": "jdsales",
+    "downloader":"phantomjs",
+    "filter": {
+        "type": "simple"
+    },
+    "seed_query": {
+        "keep": false,
+        "find": {
+            "sql":"select * from user_account where user_id in (select user_id from loan_application where status=222 and channel!='test') and platform_id=3 limit 1"
+        },
+        "url": "http://123.206.22.223:8001/submit?tmpl=jd_shop_rate&shop_type=SHOP_NAME&shop_id={{account_name}}",
+        "processor": "shop-search"
+    },
+    "timer":{
+        "first_start":"now",
+        "period":"24h"
+    },
+    "queue": {
+        "suport_priority": true
+    },
+    "processors": [
+        {
+           "index": "shop-search",
+            "page_context": {
+                "appid":["_json","data.Pages.[0].Result.app_id"]
+            },
+            "crawler_request": [
+                {
+                    "_condition":"{{existKey n \"appid\"}}",
+                    "url":"http://mall.jd.com/view_search-{{appid}}-0-5-1-24-1.html",
+                    "processor":"product-list",
+                    "priority": 2
+                }
+            ]
+        },
+        {
+            "index": "product-list",
+            "page_context":{
+                "itemData":{
+                    "_root":"ul li.jSubObject",
+                    "title":"div.jGoodsInfo div.jDesc",
+                    "productId":"span.jdNum;jdprice",
+                    "comment":"div.jExtra a"
+                }
+            },
+            "crawler_request": [
+                {
+                    "url": "a:contains('下一页');href",
+                    "processor": "product-list",
+                    "priority": 3
+                },
+                {
+                    "_datacontext": {
+                        "key":"itemData",
+                        "data_flow":true
+                    },
+                    "_condition":"{{existKey n \"productId\"}}",
+                    "url":"http://p.3.cn/prices/get?type=1&pdbp=0&skuid=J_{{productId}}&callback=cnp",
+                    "processor":"itemPro"
+                }
+            ]
+        },
+        {
+            "index": "itemPro",
+            "crawler_data":[
+                {
+                    "_type":"string",
+                    "price":"\"p\":\"([^\"]+)"
+                }
+            ]
+        }
+    ]
+}
