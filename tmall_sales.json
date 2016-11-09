@@ -1,7 +1,7 @@
 {
     "thread": 1,
-    "name": "taobaosales",
-    "collection": "taobaosales",
+    "name": "tmallsales",
+    "collection": "tmallsales",
     "filter": {
         "type": "simple"
     },
@@ -14,7 +14,7 @@
         "processor": "shop-search"
     },
     "timer":{
-        "first_start":"now",
+        "first_start":"03:00",
         "period":"24h"
     },
     "queue": {

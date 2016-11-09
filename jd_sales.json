@@ -15,7 +15,7 @@
         "processor": "shop-search"
     },
     "timer":{
-        "first_start":"now",
+        "first_start":"01:00",
         "period":"24h"
     },
     "queue": {
