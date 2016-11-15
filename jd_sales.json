@@ -9,13 +9,13 @@
     "seed_query": {
         "keep": false,
         "find": {
-            "sql":"select * from user_account where user_id in (select user_id from loan_application where status=222 and channel!='test') and platform_id=3 limit 1"
+            "sql":"select * from user_account where user_id in (select user_id from loan_application where status=222 and channel!='test') and platform_id=3"
         },
         "url": "http://123.206.22.223:8001/submit?tmpl=jd_shop_rate&shop_type=SHOP_NAME&shop_id={{account_name}}",
         "processor": "shop-search"
     },
     "timer":{
-        "first_start":"01:00",
+        "first_start":"now",
         "period":"24h"
     },
     "queue": {
@@ -40,10 +40,10 @@
             "index": "product-list",
             "page_context":{
                 "itemData":{
-                    "_root":"ul li.jSubObject",
-                    "title":"div.jGoodsInfo div.jDesc",
+                    "_root":"ul li div.jItem",
+                    "title":"div.jDesc",
                     "productId":"span.jdNum;jdprice",
-                    "comment":"div.jExtra a"
+                    "comment":"a:contains('人评价')"
                 }
             },
             "crawler_request": [

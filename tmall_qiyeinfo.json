@@ -25,7 +25,8 @@
         "processor": "shopcard"
     },
     "queue": {
-        "suport_priority": true
+        "suport_priority": true,
+        "delay":1000
     },
     "processors": [
         {
