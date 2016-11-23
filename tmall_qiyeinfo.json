@@ -12,7 +12,8 @@
                 "isTmall": "1",
                 "crawlCompany" : { "$exists" : false},
                 "shopUrl" : { "$exists" : true},
-                "shopClose" : { "$exists" : false}
+                "shopClose" : { "$exists" : false},
+                "imageSrc":{ "$exists" : false}
             },
             "keys": {
                 "userid": 1,
@@ -67,6 +68,25 @@
                     "legalPerson":"tr:contains('法定代表人') td",
                     "companyName": ";html;企业名称</th>\\s*<td>([^<]+)",
                     "crawlCompany":"true{{nil}}"
+                },
+                {
+                    "_condition":"{{containString n \"以上信息提取自经营者认证信息\"}}",
+                    "_update": {
+                        "userid": "{{userid}}"
+                    },
+                    "imageSrc":"div.info-table img;src"
+                }
+            ]
+        }
+    ],
+    "download_processors":[
+        {
+            "index": "image",
+            "files":[
+                {
+                    "filename":"{{userid}}_licenseImage",
+                    "contentType":"image/jpg",
+                    "aliases":"营业执照"
                 }
             ]
         }
