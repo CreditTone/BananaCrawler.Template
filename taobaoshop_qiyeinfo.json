@@ -1,5 +1,5 @@
 {
-    "thread": 1,
+    "thread": 5,
     "name": "taobaoqiyeinfo",
     "collection": "taobaoshoplist",
     "filter": {
@@ -38,7 +38,7 @@
             "crawler_request": [
                 {
                     "_condition":"{{existKey n \"xid\"}}",
-                    "url": "http://crawler.jisucloud.cn/submit?tmpl=ali_licence&licence={{xid}}",
+                    "url": "http://127.0.0.1:8001/submit?tmpl=ali_licence&licence={{xid}}",
                     "processor": "py_company",
                     "priority": 2
                 }
@@ -56,26 +56,36 @@
         {
             "index": "py_company",
             "page_context":{
-                "licenseNumber":["tr:contains('营业执照注册号或统一信用代码') td"],
-                "imageSrc": ["div.info-table img;src"]
+                "status":["_json","status"],
+                "companyName": ["_json","data.Pages.[0].Result.companyName"],
+                "imageSrc":["_json","data.Pages.[0].Result.imageSrc"],
+                "noInfo":["_json","data.Pages.[0].Result.noInfo"]
             },
-            "crawler_request": [
+            "crawler_data": [
                 {
-                    "_condition":"{{existKey n \"licenseNumber\"}}",
+                    "_condition":"{{existKey n \"companyName\"}}",
                     "_update": {
                         "userid": "{{userid}}"
                     },
-                    "licenseNumber": "tr:contains('营业执照注册号或统一信用代码') td",
-                    "legalPerson":"tr:contains('法定代表人') td",
-                    "companyName": ";html;企业名称</th>\\s*<td>([^<]+)",
+                    "_type":"_json",
+                    "licenseNumber": "data.Pages.[0].Result.licenseNumber",
+                    "legalPerson":"data.Pages.[0].Result.legalPerson",
+                    "companyName": "{{companyName}}",
                     "crawlCompany":"true{{nil}}"
                 },
                 {
-                    "_condition":"{{existKey n \"imageSrc\"}}",
+                    "_condition":"{{existKey n\"imageSrc\"}}",
                     "_update": {
                         "userid": "{{userid}}"
                     },
                     "imageSrc":"{{imageSrc}}"
+                },
+                {
+                    "_condition":"{{existKey n\"noInfo\"}}",
+                    "_update": {
+                        "userid": "{{userid}}"
+                    },
+                    "crawlCompany":"true{{nil}}"
                 }
             ]
         },

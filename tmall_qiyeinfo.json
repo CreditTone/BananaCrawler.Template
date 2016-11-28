@@ -56,25 +56,35 @@
         {
             "index": "py_company",
             "page_context":{
-                "licenseNumber":["tr:contains('营业执照注册号或统一信用代码') td"]
+                "companyName": ["_json","data.Pages.[0].Result.companyName"],
+                "imageSrc":["_json","data.Pages.[0].Result.imageSrc"],
+                "noInfo":["_json","data.Pages.[0].Result.noInfo"]
             },
             "crawler_data": [
                 {
-                    "_condition":"{{existKey n \"licenseNumber\"}}",
+                    "_condition":"{{existKey n \"companyName\"}}",
                     "_update": {
                         "userid": "{{userid}}"
                     },
-                    "licenseNumber": "tr:contains('营业执照注册号或统一信用代码') td",
-                    "legalPerson":"tr:contains('法定代表人') td",
-                    "companyName": ";html;企业名称</th>\\s*<td>([^<]+)",
+                    "_type":"_json",
+                    "licenseNumber": "data.Pages.[0].Result.licenseNumber",
+                    "legalPerson":"data.Pages.[0].Result.legalPerson",
+                    "companyName": "{{companyName}}",
                     "crawlCompany":"true{{nil}}"
                 },
                 {
-                    "_condition":"{{containString n \"以上信息提取自经营者认证信息\"}}",
+                    "_condition":"{{existKey n\"imageSrc\"}}",
                     "_update": {
                         "userid": "{{userid}}"
                     },
-                    "imageSrc":"div.info-table img;src"
+                    "imageSrc":"{{imageSrc}}"
+                },
+                {
+                    "_condition":"{{existKey n\"noInfo\"}}",
+                    "_update": {
+                        "userid": "{{userid}}"
+                    },
+                    "crawlCompany":"true{{nil}}"
                 }
             ]
         }
