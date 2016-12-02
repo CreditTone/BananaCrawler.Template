@@ -1,10 +1,7 @@
 {
     "thread": 10,
     "name": "taobaoshop",
-    "collection": "taobaoshoplist",
-    "filter": {
-        "type": "simple"
-    },
+    "filter": "simple",
     "seeds": [
         {
             "processor": "product_shop",

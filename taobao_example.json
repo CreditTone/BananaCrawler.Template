@@ -5,14 +5,8 @@
     "filter": "simple",
     "seeds": [
         {
-           "urls":[
-                "https://www.taobao.com/markets/tbhome/market-list",
-                "https://www.taobao.com/markets/paimai/ali2car?spm=a21bo.50862.201867-links-12.34.ZvscXt",
-                "https://car.tmall.com/?spm=a21bo.50862.201867-links-12.1.VR8Xtl",
-                "https://www.taobao.com/markets/quan/home?spm=a21bo.50862.201867-links-15.29.VR8Xtl&pvid=2ad9e786-29ed-4800-9103-c08f1e82d2ef",
-                "https://life.taobao.com/?spm=a21bo.50862.201867-links-15.47.VR8Xtl&pvid=2ad9e786-29ed-4800-9103-c08f1e82d2ef"
-           ],
-           "processor":"hy_p"
+           "url":"https://s.taobao.com/list?q=iphone&cat=11%2C1101%2C1201%2C14%2C1512%2C20%2C50008090%2C50012164%2C50018222%2C50018264%2C50019780%2C50076292&style=grid&seller_type=taobao&spm=a219r.lm872.1000187.1",
+           "processor":"product_shop"
         }
     ],
     "queue": {
@@ -20,59 +14,7 @@
     },
     "processors": [
         {
-            "index": "hy_p",
-            "crawler_request": [
-                {
-                    "_type": "string",
-                    "_root": "<a[^>]+cat\\=\\d+[^>]+>[^<]+<",
-                    "url": "href=\"([^\"]+)\"",
-                    "priority": 1,
-                    "processor": "product_shop"
-                },
-                {
-                    "_type": "string",
-                    "_root": "<a[^>]+s.taobao.com[^>]+q\\=[^>]+>[^<]+<",
-                    "url": "href=\"([^\"]+)\"",
-                    "priority": 1,
-                    "processor": "product_shop"
-                }
-            ]
-        },
-        {
             "index": "product_shop",
-            "content_prepare": {
-                "direct": [
-                    "_string",
-                    "g_page_config =(\\s*\\{.*);\\s*g_srp_load"
-                ]
-            },
-            "page_context": {
-                "product_param":{
-                    "_type": "json",
-                    "_root": "mods.nav.data.common.[*].sub",
-                    "product_key": "key",
-                    "product_value": "value"
-                }
-            },
-            "crawler_request": [
-                {
-                    "_datacontext": {
-                        "key":"product_param",
-                        "data_flow":false
-                    },
-                    "url":"{{fixKey n _url product_key}}&{{product_key}}={{product_value}}",
-                    "processor": "hy_shop",
-                    "priority": 2
-                },
-                {
-                     "url":"{{_url}}",
-                    "processor": "hy_shop",
-                    "priority": 2
-                }
-            ]
-        },
-        {
-            "index": "hy_shop",
             "content_prepare": {
                 "direct": [
                     "_string",
@@ -101,8 +43,8 @@
                 {
                     "_condition": "{{gt n 100 currentPage}}",
                     "_type": "json",
-                    "url": "{{fixKey n _url \"s\"}}&s={{multiply n 60 currentPage}}",
-                    "processor": "hy_shop",
+                    "url": "{{_url}}&s={{multiply n 60 currentPage}}",
+                    "processor": "product_shop",
                     "priority": 3
                 },
                 {
@@ -111,13 +53,13 @@
                         "data_flow":true
                     },
                     "url": "https://s.taobao.com/api?sid={{userid}}&callback=shopcard&app=api&m=get_shop_card",
-                    "processor": "hy_shopcard",
+                    "processor": "shopcard",
                     "priority": 4
                 }
             ]
         },
         {
-            "index": "hy_shopcard",
+            "index": "shopcard",
             "crawler_data": [
                 {
                     "_type": "json",

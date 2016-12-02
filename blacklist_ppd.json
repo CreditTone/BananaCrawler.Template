@@ -1,8 +1,5 @@
 {
-    "filter":{
-        "type":"simple",
-        "target":["info"]
-    },
+    "filter": "simple",
     "thread": 1,
     "name": "ppd",
     "collection":"blacklist",

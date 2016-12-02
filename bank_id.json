@@ -2,9 +2,7 @@
     "thread": 10,
     "name": "bankcrawler",
     "collection": "banklist",
-    "filter": {
-        "type": "simple"
-    },
+    "filter": "simple",
     "seeds": [
         {
             "urls":[

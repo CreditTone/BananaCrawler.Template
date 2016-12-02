@@ -2,9 +2,7 @@
     "thread": 10,
     "name": "jdshop",
     "collection": "jdshoplist",
-    "filter": {
-        "type": "simple"
-    },
+    "filter": "simple",
     "seeds": [
         {
            "url_iterator":{

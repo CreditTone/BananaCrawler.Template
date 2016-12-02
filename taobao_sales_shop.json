@@ -1,0 +1,93 @@
+{
+    "thread": 10,
+    "name": "taobaosalesshop",
+    "collection": "taobaoshoplist",
+    "filter": "simple",
+    "seed_query": {
+        "keep": false,
+        "find": {
+            "sql":"select * from user_account where user_id in (select user_id from loan_application where status=222 and channel!='test') and platform_id=1 limit 2"
+        },
+        "url": "https://shopsearch.taobao.com/search?app=shopsearch&q={{account_name}}&js=1&style=grid&initiative_id=staobaoz_20161202&ie=utf8",
+        "processor": "product_shop"
+    },
+    "timer":{
+        "first_start":"03:00",
+        "period":"24h"
+    },
+    "queue": {
+        "suport_priority": true
+    },
+    "processors": [
+        {
+            "index": "product_shop",
+            "content_prepare": {
+                "direct": [
+                    "_string",
+                    "g_page_config =(\\s*\\{.*);\\s*g_srp_load"
+                ]
+            },
+            "page_context": {
+                "currentPage": [
+                    "_json",
+                    "mods.pager.data.currentPage"
+                ],
+                "auctions":{
+                    "_type": "json",
+                    "_root": "mods.shoplist.data.shopItems",
+                    "nick": "nick",
+                    "location": "provcity",
+                    "userid": "uid",
+                    "icon": "icons"
+                }
+            },
+            "crawler_request": [
+                {
+                    "_condition": "{{gt n 100 currentPage}}",
+                    "_type": "json",
+                    "url": "{{_url}}&s={{multiply n 20 currentPage}}",
+                    "processor": "product_shop",
+                    "priority": 3
+                },
+                {
+                    "_datacontext": {
+                        "key":"auctions",
+                        "data_flow":true
+                    },
+                    "url": "https://s.taobao.com/api?sid={{userid}}&callback=shopcard&app=api&m=get_shop_card",
+                    "processor": "shopcard",
+                    "priority": 4
+                }
+            ]
+        },
+        {
+            "index": "shopcard",
+            "crawler_data": [
+                {
+                    "_update": {
+                        "userid": "{{sid}}"
+                    },
+                    "_type": "json",
+                    "industry": "industry",
+                    "shopUrl": "url",
+                    "ratesum": "ratesum",
+                    "isTmall": "isTmall",
+                    "isQiye": "isQiye",
+                    "shopName": "title",
+                    "encryptedUserId": "encryptedUserId",
+                    "openYears": "openYears",
+                    "openYearsText": "openYearsText",
+                    "dsr":{
+                        "favorableRate":"favorableRate",
+                        "matchDescription":"matchDescription",
+                        "serviceAttitude":"serviceAttitude",
+                        "deliverySpeed":"deliverySpeed",
+                        "descriptionCompared":"descriptionCompared",
+                        "attitudeCompared":"attitudeCompared",
+                        "deliveryCompared":"deliveryCompared"
+                    }
+                }
+            ]
+        }
+    ]
+}

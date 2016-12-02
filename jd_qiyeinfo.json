@@ -2,9 +2,7 @@
     "thread": 5,
     "name": "jdqiyeinfo",
     "collection": "jdshoplist",
-    "filter": {
-        "type": "simple"
-    },
+    "filter": "simple",
     "seed_query": {
         "keep": true,
         "find": {

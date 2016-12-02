@@ -2,9 +2,7 @@
     "thread": 1,
     "name": "tmallqiyeinfo",
     "collection": "taobaoshoplist",
-    "filter": {
-        "type": "simple"
-    },
+    "filter": "simple",
     "seed_query": {
         "keep": true,
         "find": {

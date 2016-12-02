@@ -2,19 +2,17 @@
     "thread": 1,
     "name": "taobaosales",
     "collection": "taobaosales",
-    "filter": {
-        "type": "simple"
-    },
+    "filter": "simple",
     "seed_query": {
         "keep": false,
         "find": {
-            "sql":"select * from user_account where user_id in (select user_id from loan_application where status=222 and channel!='test') and platform_id=1"
+            "sql":"select * from user_account where user_id in (select user_id from loan_application where status=222 and channel!='test') and platform_id=1 limit 1"
         },
         "url": "http://crawler.jisucloud.cn/submit?tmpl=tbshop_search&sellername={{account_name}}",
         "processor": "shop-search"
     },
     "timer":{
-        "first_start":"17:30",
+        "first_start":"03:00",
         "period":"24h"
     },
     "queue": {

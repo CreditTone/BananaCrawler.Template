@@ -2,9 +2,7 @@
     "thread": 1,
     "name": "music",
     "collection": "music",
-    "filter": {
-        "type": "simple"
-    },
+    "filter": "simple",
     "seeds": [
         {
            "urls":[

@@ -2,9 +2,7 @@
     "thread": 1,
     "name": "musicDownloader",
     "collection": "music",
-    "filter": {
-        "type": "simple"
-    },
+    "filter": "simple",
     "seed_query": {
         "find": {
             "ref": {

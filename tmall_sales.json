@@ -2,9 +2,7 @@
     "thread": 1,
     "name": "tmallsales",
     "collection": "tmallsales",
-    "filter": {
-        "type": "simple"
-    },
+   "filter": "simple",
     "seed_query": {
         "keep": false,
         "find": {
