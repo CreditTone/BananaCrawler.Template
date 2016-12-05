@@ -1,0 +1,45 @@
+{
+    "thread": 5,
+    "name": "taobaoimage",
+    "collection": "taobaoshoplist",
+    "filter": "simple",
+    "seed_query": {
+        "keep": true,
+        "find": {
+            "ref": {
+                "imagePath" : { "$exists" : false},
+                "imageSrc":{ "$exists" : true}
+            },
+            "keys": {
+                "userid": 1,
+                "imageSrc": 1,
+                "_link": 1
+            },
+            "limit": 5000
+        },
+        "url": "https://openshop.taobao.com{{imageSrc}}",
+        "processor": "image"
+    },
+    "queue": {
+        "suport_priority": true,
+        "delay":1000
+    },
+    "processors": [
+        {
+            "index": "image",
+            "page_context": {
+                "status":["_json","status"],
+                "data":["_json","data"]
+            },
+            "crawler_data": [
+                {
+                    "_condition":"{{eq n status \"finish_fetch_data\"}}",
+                    "_update": {
+                        "userid": "{{userid}}"
+                    },
+                    "imagePath": "{{data}}"
+                }
+            ]
+        }
+    ]
+}

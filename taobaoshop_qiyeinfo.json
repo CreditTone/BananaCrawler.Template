@@ -36,7 +36,7 @@
             "crawler_request": [
                 {
                     "_condition":"{{existKey n \"xid\"}}",
-                    "url": "http://127.0.0.1:8001/submit?tmpl=ali_licence&licence={{xid}}",
+                    "url": "http://crawler.jisucloud.cn/submit?tmpl=ali_licence&licence={{xid}}",
                     "processor": "py_company",
                     "priority": 2
                 }
