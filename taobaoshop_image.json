@@ -12,12 +12,11 @@
             },
             "keys": {
                 "userid": 1,
-                "imageSrc": 1,
-                "_link": 1
+                "imageSrc": 1
             },
             "limit": 5000
         },
-        "url": "https://openshop.taobao.com{{imageSrc}}",
+        "url": "http://crawler.jisucloud.cn/submit?tmpl=ali_licence_image&imageUrl={{imageSrc}}",
         "processor": "image"
     },
     "queue": {
