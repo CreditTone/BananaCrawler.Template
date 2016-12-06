@@ -16,7 +16,12 @@
             },
             "limit": 5000
         },
-        "url": "http://crawler.jisucloud.cn/submit?tmpl=ali_licence_image&imageUrl={{imageSrc}}",
+        "url": "http://crawler.jisucloud.cn/submit",
+        "method":"post",
+        "params":{
+            "tmpl":"ali_licence_image",
+            "imageUrl":"{{imageSrc}}"
+        },
         "processor": "image"
     },
     "queue": {
