@@ -59,6 +59,9 @@
                 "imageSrc":["_json","data.Pages.[0].Result.imageSrc"],
                 "noInfo":["_json","data.Pages.[0].Result.noInfo"]
             },
+            "logs":[
+                "企业解析信息:{{_content}}"
+            ],
             "crawler_data": [
                 {
                     "_condition":"{{existKey n \"companyName\"}}",
