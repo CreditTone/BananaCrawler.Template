@@ -7,7 +7,7 @@
         "keep": true,
         "find": {
             "ref": {
-                "isQiye": "1",
+                "$or":[{"isQiye":"1"},{"isTmall":"1"}],
                 "crawlCompany" : { "$exists" : false},
                 "shopUrl" : { "$exists" : true},
                 "shopClose" : { "$exists" : false},

@@ -64,7 +64,7 @@
                     "_update": {
                         "userid": "{{userid}}"
                     },
-                    "_type":"_json",
+                    "_type":"json",
                     "licenseNumber": "data.Pages.[0].Result.licenseNumber",
                     "legalPerson":"data.Pages.[0].Result.legalPerson",
                     "companyName": "{{companyName}}",
