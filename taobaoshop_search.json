@@ -1,24 +1,55 @@
 {
     "thread": 10,
-    "name": "taobaosalesshop",
+    "name": "taobaoshop",
     "collection": "taobaoshoplist",
     "filter": "simple",
-    "seed_query": {
-        "keep": false,
-        "find": {
-            "sql":"select * from user_account where user_id in (select user_id from loan_application where status=222 and channel!='test') and platform_id=1 limit 2"
-        },
-        "url": "https://shopsearch.taobao.com/search?app=shopsearch&q={{account_name}}&js=1&style=grid&initiative_id=staobaoz_20161202&ie=utf8",
-        "processor": "product_shop"
-    },
-    "timer":{
-        "first_start":"03:00",
-        "period":"24h"
-    },
+    "seeds":[
+        {
+            "url":"http://www.ebuy16.com/buy/zg/1055_1.html",
+            "processor":"yigouwang"
+        }
+    ],
     "queue": {
         "suport_priority": true
     },
     "processors": [
+        {
+            "index":"yigouwang",
+            "crawler_request": [
+                {
+                    "_root":"div.scc ul.other li",
+                    "url":"a;href",
+                    "processor":"yigouwang_list",
+                    "priority": 1
+                }
+            ]
+        },
+        {
+            "index":"yigouwang_list",
+            "page_context":{
+                "shop_names":{
+                    "_root":"div.shop_list li",
+                    "name":"a"
+                }
+            },
+            "crawler_request": [
+                {
+                    "_datacontext":{
+                        "key":"shop_names",
+                        "data_flow":false
+                    },
+                    "_root":"div.shop_list li",
+                    "url":"https://shopsearch.taobao.com/search?app=shopsearch&q={{name}}&js=1&style=grid&initiative_id=staobaoz_20161202&ie=utf8",
+                    "processor":"product_shop",
+                    "priority": 2
+                },
+                {
+                    "url":"a:contains('下一页');href",
+                    "processor":"yigouwang_list",
+                    "priority": 1
+                }
+            ]
+        },
         {
             "index": "product_shop",
             "content_prepare": {
@@ -33,6 +64,9 @@
                     "mods.pager.data.currentPage"
                 ],
                 "auctions":{
+                    "_unique": [
+                        "userid"
+                    ],
                     "_type": "json",
                     "_root": "mods.shoplist.data.shopItems",
                     "nick": "nick",
@@ -64,9 +98,6 @@
             "index": "shopcard",
             "crawler_data": [
                 {
-                    "_update": {
-                        "userid": "{{sid}}"
-                    },
                     "_type": "json",
                     "industry": "industry",
                     "shopUrl": "url",
