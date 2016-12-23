@@ -1,0 +1,51 @@
+{
+    "thread": 1,
+    "name": "tmallxid",
+    "collection": "taobaoshoplist",
+    "filter": "simple",
+    "seed_query": {
+        "keep": true,
+        "find": {
+            "ref": {
+                "isTmall":"1",
+                "xid" : { "$exists" : false},
+                "noXid" : { "$exists" : false}
+            },
+            "keys": {
+                "userid": 1,
+                "shopUrl": 1,
+                "_link": 1
+            },
+            "limit": 5000
+        },
+        "url": "https:{{shopUrl}}",
+        "processor": "shopcard"
+    },
+    "queue": {
+        "suport_priority": true
+    },
+    "processors": [
+        {
+            "index": "shopcard",
+            "page_context": {
+                "xid":["_string","xid=([^\"]+)"]
+            },
+            "crawler_data":[
+                {
+                    "_condition":"{{isEmpty n \"xid\"}}",
+                    "_update": {
+                        "userid": "{{userid}}"
+                    },
+                    "noXid":"true{{nil}}"
+                },
+                {
+                    "_condition":"{{existKey n \"xid\"}}",
+                    "_update": {
+                        "userid": "{{userid}}"
+                    },
+                    "xid":"{{xid}}"
+                }
+            ]
+        }
+    ]
+}

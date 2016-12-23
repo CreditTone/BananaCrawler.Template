@@ -28,6 +28,10 @@
         "suport_priority": true,
         "delay":1000
     },
+    "timer":{
+        "first_start":"now",
+        "period":"24h"
+    },
     "processors": [
         {
             "index": "image",
