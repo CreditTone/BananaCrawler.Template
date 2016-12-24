@@ -7,50 +7,27 @@
         "keep": true,
         "find": {
             "ref": {
-                "$or":[{"isQiye":"1"},{"isTmall":"1"}],
+                "isTmall":"1",
                 "crawlCompany" : { "$exists" : false},
-                "shopUrl" : { "$exists" : true},
+                "xid" : { "$exists" : true},
                 "shopClose" : { "$exists" : false},
                 "imageSrc":{ "$exists" : false}
             },
             "keys": {
                 "userid": 1,
-                "shopUrl": 1,
+                "xid": 1,
                 "_link": 1
             },
             "limit": 5000
         },
-        "url": "https:{{shopUrl}}",
-        "processor": "shopcard"
+        "url": "http://crawler.jisucloud.cn/submit?tmpl=ali_licence&licence={{xid}}",
+        "processor": "py_company"
     },
     "queue": {
         "suport_priority": true,
-        "delay":1000
+        "delay":500
     },
     "processors": [
-        {
-            "index": "shopcard",
-            "page_context": {
-                "xid":["_string","xid=([^\"]+)"]
-            },
-            "crawler_request": [
-                {
-                    "_condition":"{{existKey n \"xid\"}}",
-                    "url": "http://crawler.jisucloud.cn/submit?tmpl=ali_licence&licence={{xid}}",
-                    "processor": "py_company",
-                    "priority": 2
-                }
-            ],
-            "crawler_data":[
-                {
-                    "_condition":"{{isEmpty n \"xid\"}}",
-                    "_update": {
-                        "userid": "{{userid}}"
-                    },
-                    "shopClose":"true{{nil}}"
-                }
-            ]
-        },
         {
             "index": "py_company",
             "page_context":{
