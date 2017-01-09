@@ -52,12 +52,10 @@
         },
         {
             "index": "product_shop",
-            "content_prepare": {
-                "direct": [
+            "content_prepare": [
                     "_string",
                     "g_page_config =(\\s*\\{.*);\\s*g_srp_load"
-                ]
-            },
+                ],
             "page_context": {
                 "currentPage": [
                     "_json",

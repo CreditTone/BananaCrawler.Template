@@ -1,0 +1,391 @@
+{
+    "thread": 1,
+    "name": "taobaoorders",
+    "collection": "taobaoorders",
+    "filter": "simple",
+    "seeds":[
+        {
+            "url":"https://buyertrade.taobao.com/trade/itemlist/asyncBought.htm?action=itemlist/BoughtQueryAction&event_submit_do_query=1&_input_charset=utf8",
+            "method":"post",
+            "headers":{
+                "Accept":"application/json, text/javascript, */*; q=0.01",
+                "Host":"buyertrade.taobao.com",
+                "Referer":"https://buyertrade.taobao.com/trade/itemlist/list_bought_items.htm?spm=a21bo.50862.1997525045.2.BL8JxN"
+            },
+            "params":{
+                "action":"itemlist/BoughtQueryAction",
+                "auctionStatus":"SUCCESS",
+                "orderStatus":"SUCCESS",
+                "queryOrder":"desc",
+                "pageNum":"14",
+                "pageSize":"15",
+                "prePageNo":"0"
+            },
+            "processor":"buyertrade"
+        }
+    ],
+    "queue": {
+        "suport_priority": true,
+        "delay":1000
+    },
+    "mode":{
+        "prepared":true
+    },
+    "processors": [
+        {
+            "index":"buyertrade",
+            "page_context":{
+                "prefetchCount":["_json","page.prefetchCount"]
+            },
+            "crawler_request": [
+                {
+                    "_type":"json",
+                    "_root":"mainOrders",
+                    "url":"statusInfo.url",
+                    "attribute":{
+                        "orderStatus":"statusInfo.text",
+                        "createTime":"orderInfo.createTime"
+                    },
+                    "priority":3,
+                    "processor":"detail_forward"
+                },
+                {
+                    "_condition": "{{gt n prefetchCount 100000}}",
+                    "url":"https://buyertrade.taobao.com/trade/itemlist/asyncBought.htm?action=itemlist/BoughtQueryAction&event_submit_do_query=1&_input_charset=utf8",
+                    "method":"post",
+                    "headers":{
+                        "Accept":"application/json, text/javascript, */*; q=0.01",
+                        "Host":"buyertrade.taobao.com",
+                        "Referer":"https://buyertrade.taobao.com/trade/itemlist/list_bought_items.htm?spm=a21bo.50862.1997525045.2.BL8JxN"
+                    },
+                    "params":{
+                        "action":"itemlist/BoughtQueryAction",
+                        "auctionStatus":"SUCCESS",
+                        "orderStatus":"SUCCESS",
+                        "queryOrder":"desc",
+                        "pageNum":"{{add n 1 pageNum}}",
+                        "pageSize":"15",
+                        "prePageNo":"{{add n 1 prePageNo}}"
+                    },
+                    "processor":"buyertrade",
+                    "priority":2
+                }
+            ],
+            "logs":[
+                "prefetchCount:{{prefetchCount}} pageNum:{{pageNum}} prefetchCount>0:{{gt n prefetchCount 0}}"
+            ]
+        },
+        {
+            "index":"detail_forward",
+            "forwarders":[
+                {
+                    "condition":"{{contains n _owner_url \"trade.tmall.com\"}}",
+                    "processor":"tmall_detail"
+                },
+                {
+                    "condition":"{{contains n _owner_url \"trade.tmall.hk\"}}",
+                    "processor":"tmall_detail"
+                },
+                {
+                    "condition":"{{contains n _owner_url \"trade.taobao.com\"}}",
+                    "processor":"taobao_detail"
+                },
+                {
+                    "condition":"{{contains n _owner_url \"tradearchive.taobao.com\"}}",
+                    "processor":"tradearchive_detail"
+                },
+                {
+                    "condition":"{{contains n _owner_url \"baoxian.taobao.com\"}}",
+                    "processor":"baoxian_detail"
+                },
+                {
+                    "condition":"{{contains n _owner_url \"jipiao.trip.taobao.com\"}}",
+                    "processor":"jipiao_detail"
+                },
+                {
+                    "condition":"{{contains n _owner_url \"waimai.taobao.com\"}}",
+                    "processor":"wumai_detail"
+                },
+                {
+                    "condition":"{{contains n _owner_url \"dianying.taobao.com\"}}",
+                    "processor":"dianying_detail"
+                },
+                {
+                    "condition":"{{contains n _owner_url \"train.trip.taobao.com\"}}",
+                    "processor":"train_detail"
+                },
+                {
+                    "condition":"{{contains n _owner_url \"licai.taobao.com\"}}",
+                    "processor":"lical_detail"
+                },
+                {
+                    "condition":"{{contains n _owner_url \"caipiao.taobao.com\"}}",
+                    "processor":"caipiao_detail"
+                }
+            ]
+        },
+        {
+            "index":"tmall_detail",
+            "content_prepare":";html;detailData = (.*}}})\\s*</script",
+            "crawler_data":[
+                {
+                    "_type":"json",
+                    "orderType":"tmall{{nil}}",
+                    "orderStatus":"{{orderStatus}}",
+                    "orderCreateTime":"{{createTime}}",
+                    "orderId":"{{bizOrderId}}",
+                    "sellerId":"ad.banner.params.sellerId",
+                    "categoryId":"ad.banner.params.categoryId",
+                    "itemIds":"ad.salePromotion.params.itemIds",
+                    "amount":{
+                        "_root":"amount.count.[0]",
+                        "money":"content.[0].data.money.text",
+                        "text":"content.[0].data.titleLink.text"
+                    },
+                    "receiverAddress":"basic.lists.(key='收货地址').[0].content.[0].text",
+                    "alipayTransactionId":"basic.lists.(key='订单编号').[0].content.[1].moreList.[0].content.[0].text",
+                    "shopName":"basic.lists.(key='商家').[0].content.[0].text;;title='([^']+)",
+                    "shopCompany":"basic.lists.(key='商家').[0].content.[1].moreList.[0].content.[0].text",
+                    "shopPhone":"basic.lists.(key='商家').[0].content.[1].moreList.[2].content.[0].text",
+                    "logistic":{
+                        "_root":"orders.list.[0].logistic.content.[0]",
+                        "companyName":"companyName",
+                        "mailNo":"mailNo"
+                    },
+                    "items":{
+                        "_root":"orders.list.[0].status.[*].subOrders.[0]",
+                        "title":"itemInfo.title",
+                        "price":"priceInfo.[0].text"
+                    }
+                }
+            ]
+        },
+        {
+            "index":"taobao_detail",
+            "content_prepare":";html;var data = (.*}})\\s*</script",
+            "crawler_data":[
+                {
+                    "_type":"json",
+                    "orderType":"taobao{{nil}}",
+                    "orderStatus":"{{orderStatus}}",
+                    "orderCreateTime":"{{createTime}}",
+                    "orderId":"mainOrder.id",
+                    "statusInfo":"mainOrder.statusInfo",
+                    "amount":{
+                        "_root":"mainOrder.totalPrice.[*].content.[0]",
+                        "value":"value",
+                        "text":"type"
+                    },
+                    "receiverAddress":"deliveryInfo.address",
+                    "alipayTransactionId":"mainOrder.lines.[1].content.[1].value.value",
+                    "sellerNick":"deliveryInfo.sellerNick",
+                    "shopPhone":"mainOrder.seller.phoneNum",
+                    "sellerName":"mainOrder.seller.name",
+                    "sellerTaobaoId":"mainOrder.seller.id",
+                    "logistic":{
+                        "companyName":"deliveryInfo.logisticsName",
+                        "mailNo":"deliveryInfo.logisticsNum"
+                    },
+                    "items":{
+                        "_root":"mainOrder.subOrders.[*]",
+                        "title":"itemInfo.title",
+                        "price":"priceInfo"
+                    }
+                }
+            ]
+        },
+        {
+            "index":"tradearchive_detail",
+            "crawler_data":[
+                {
+                    "orderType":"taobao{{nil}}",
+                    "orderStatus":"{{orderStatus}}",
+                    "orderCreateTime":"{{createTime}}",
+                    "orderId":"{{bizOrderId}}",
+                    "items":{
+                        "_root":"tr.order-item @array",
+                        "title":"td.item span.name",
+                        "price":"td.price"
+                    },
+                    "receiverAddress":"tr:contains('收货地址：') td @index=1",
+                    "alipayTransactionId":"span.alilay-num",
+                    "sellerNick":".nickname",
+                    "sellerName":".contact-info .name",
+                    "logistic":{
+                        "companyName":"tr:contains('物流公司：') td @index=1",
+                        "mailNo":"tr:contains('运单号：') td @index=1"
+                    },
+                    "price":";html;实付款：\\s*<strong>([^<]+)"
+                }
+            ]
+        },
+        {
+            "index":"baoxian_detail",
+            "crawler_data":[
+                {
+                    "orderType":"baoxian{{nil}}",
+                    "orderStatus":"{{orderStatus}}",
+                    "orderCreateTime":"{{createTime}}",
+                    "orderId":"{{bizOrderId}}",
+                    "name":".bo-lsonelne;html;：([^<]+)<",
+                    "cardId":";html;身份证：([^<]+) <",
+                    "insureId":";html;保单编号：(\\d+)",
+                    "number":";html';数量[^：]+：(\\d+)",
+                    "price":";html;保费（元）：([\\d\\.]+)",
+                    "car":"div[class='bo-blittle clearfix J_Little'] .bo-blb",
+                    "insureType":".bo-bread;html;([^\\s]+)\\s*>" 
+                }
+            ]
+        },
+        {
+            "index":"wumai_detail",
+            "crawler_data":[
+                {
+                    "orderType":"wumai{{nil}}",
+                    "orderStatus":"{{orderStatus}}",
+                    "orderCreateTime":"{{createTime}}",
+                    "orderId":"{{orderId}}",
+                    "alipayId":".alipay-number;html;(\\d+)",
+                    "orderTime":";html;下单时间：</span>\\s*<span>([^<]+)",
+                    "payTime":";html;付款时间：</span>\\s*<span>([^<]+)",
+                    "orders":{
+                        "_root":"table[class='order-table'] tbody tr @array",
+                        "name":".goods-name-txt",
+                        "price":"td @index=3",
+                        "num":"td @index=4"
+                    },
+                    "price":"td[rowspan='2']",
+                    "receiverAddress":";html;收货地址：</span>\\s*<span>([^<]+)"
+                }
+            ]
+        },
+        {
+            "index":"dianying_detail",
+            "crawler_data":[
+                {
+                    "orderType":"dianying{{nil}}",
+                    "orderStatus":"{{orderStatus}}",
+                    "orderId":"{{orderId}}",
+                    "orderCreateTime":"{{createTime}}",
+                    "movie":"li.clearfix:contains('影片名称') ul",
+                    "cinema":"li.clearfix:contains('所在影院') span",
+                    "viewTime":"li.clearfix:contains('上映时间') span",
+                    "seat":"li.clearfix:contains('座位信息') span",
+                    "price":"li[class='clearfix J_ticketContent'] strong",
+                    "mobile":"li.clearfix:contains('接收影票的手机号码') span"
+                }
+            ]
+        },
+        {
+            "index":"train_detail",
+            "crawler_data":[
+                {
+                    "orderType":"huocarpiao{{nil}}",
+                    "orderStatus":"{{orderStatus}}",
+                    "orderId":"{{mainBizOrderId}}",
+                    "orderCreateTime":"{{createTime}}",
+                    "fromCity":".train-depart .station",
+                    "fromDate":".train-depart .date",
+                    "fromTime":".train-depart .time",
+                    "toCity":".train-arrive .station",
+                    "toDate":".train-arrive .date",
+                    "toTime":".train-arrive .time",
+                    "space":"span[class='trinfo-sprite J_SeatType   seat-seat  ']",
+                    "train":{
+                        "_root":"td.train-info",
+                        "trainNum":".train-num",
+                        "timeCost":".time-cost span"
+                    },
+                    "name":"dl[class='infos clearfix '] .name",
+                    "cardId":"dd[class='certnum J_CertNum']",
+                    "brithday":";html;乘客生日：</dt>\\s*<dd>([^<]+)",
+                    "contacter":{
+                        "_root":"dl[class='contacter clearfix']",
+                        "name":";html;姓名：</dt><dd>([^<]+)",
+                        "mobile":";html;手机号码：</dt><dd>(\\d+)"
+                    },
+                    "price":"div[class='trainorder-mod mod-submit submit-area'] .price",
+                    "insureNum":";html;bizOrderId=(\\d+)"
+                }
+            ]
+        },
+        {
+            "index":"jipiao_detail",
+            "crawler_data":[
+                {
+                    "orderType":"jipiao{{nil}}",
+                    "orderStatus":"{{orderStatus}}",
+                    "orderCreateTime":"{{createTime}}",
+                    "orderId":"{{order_id}}",
+                    "fromCity":".flight-from .city",
+                    "fromAirport":".flight-from .airport",
+                    "fromDate":".flight-from .date",
+                    "fromTime":".flight-from .time",
+                    "toCity":".flight-to .city",
+                    "toAirport":".flight-to .airport",
+                    "toDate":".flight-to .date",
+                    "toTime":".flight-to .time",
+                    "space":".flight-space",
+                    "flight":{
+                        "_root":"td.flight-info",
+                        "flightNum":"li.flight-num",
+                        "timeCost":"li[class='time-cost clearfix']",
+                        "flightSize":"li[class='flight-size']"
+                    },
+                    "name":"dl[class='infos clearfix'] .name",
+                    "cardId":"dl[class='infos clearfix'] dd[class='certnum  J_CertNum']",
+                    "brithday":";html;乘客生日：</dt>\\s*<dd>([^<]+)",
+                    "contacter":{
+                        "name":"#J_ContacterContent .J_ContacterName",
+                        "mobile":"#J_ContacterContent .J_ContacterMobile",
+                        "email":"#J_ContacterContent .J_ContacterEmail"
+                    },
+                    "insureNum":";html;bizOrderId=(\\d+)",
+                    "price":"span[class='pi-price  pi-price-bold pi-price-lgt'];html;(\\d+)"
+                }
+            ]
+        },
+        {
+            "index":"lical_detail",
+            "crawler_data":[
+                {
+                    "orderType":"licai{{nil}}",
+                    "orderStatus":"{{orderStatus}}",
+                    "orderCreateTime":"{{createTime}}",
+                    "orderId":"{{biz_order_id}}",
+                    "licalId":"div[class='field-item field-item-lg'] .field-detail",
+                    "orderType":"div[class='field-item field-item-st']:contains('交易类型') .field-detail",
+                    "orders":{
+                        "_root":"table[class='order-list'] tbody tr @array",
+                        "name":"td",
+                        "price":"td @index=1",
+                        "servicePrice":"td @index=2",
+                        "itemValue":"td @index=3",
+                        "num":"td @index=4"
+                    },
+                    "seller":"span.J_WangWang;data-tnick"
+                }
+            ]
+        },
+        {
+            "index":"caipiao_detail",
+            "content_prepare":";html;jsonData:([^\\)]+)\\}\\);",
+            "crawler_data":[
+                {
+                    "_type":"json",
+                    "orderType":"caipiao{{nil}}",
+                    "orderStatus":"{{orderStatus}}",
+                    "orderCreateTime":"{{createTime}}",
+                    "orderId":"outerId",
+                    "caipiaoStatus":"orderStatus",
+                    "price":"feeMoney.amount",
+                    "orders":{
+                        "_root":"orderNumber",
+                        "luckyNumber":"luckyNumber",
+                        "status":"status"
+                    }
+                }
+            ]
+        }
+    ]
+}
