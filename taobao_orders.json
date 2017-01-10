@@ -17,7 +17,7 @@
                 "auctionStatus":"SUCCESS",
                 "orderStatus":"SUCCESS",
                 "queryOrder":"desc",
-                "pageNum":"14",
+                "pageNum":"1",
                 "pageSize":"15",
                 "prePageNo":"0"
             },
@@ -44,13 +44,21 @@
                     "url":"statusInfo.url",
                     "attribute":{
                         "orderStatus":"statusInfo.text",
-                        "createTime":"orderInfo.createTime"
+                        "createTime":"orderInfo.createTime",
+                        "items":{
+                            "_root":"subOrders",
+                            "title":"itemInfo.title",
+                            "original":"priceInfo.original",
+                            "realTotal":"priceInfo.realTotal",
+                            "quantity":"quantity"
+                        },
+                        "totalPrice":"payInfo.actualFee"
                     },
                     "priority":3,
                     "processor":"detail_forward"
                 },
                 {
-                    "_condition": "{{gt n prefetchCount 100000}}",
+                    "_condition": "{{gt n prefetchCount 0}}",
                     "url":"https://buyertrade.taobao.com/trade/itemlist/asyncBought.htm?action=itemlist/BoughtQueryAction&event_submit_do_query=1&_input_charset=utf8",
                     "method":"post",
                     "headers":{
@@ -127,6 +135,7 @@
         {
             "index":"tmall_detail",
             "content_prepare":";html;detailData = (.*}}})\\s*</script",
+            "keep_down":true,
             "crawler_data":[
                 {
                     "_type":"json",
@@ -134,14 +143,9 @@
                     "orderStatus":"{{orderStatus}}",
                     "orderCreateTime":"{{createTime}}",
                     "orderId":"{{bizOrderId}}",
+                    "items":"{{items}}",
+                    "totalPrice":"{{totalPrice}}",
                     "sellerId":"ad.banner.params.sellerId",
-                    "categoryId":"ad.banner.params.categoryId",
-                    "itemIds":"ad.salePromotion.params.itemIds",
-                    "amount":{
-                        "_root":"amount.count.[0]",
-                        "money":"content.[0].data.money.text",
-                        "text":"content.[0].data.titleLink.text"
-                    },
                     "receiverAddress":"basic.lists.(key='收货地址').[0].content.[0].text",
                     "alipayTransactionId":"basic.lists.(key='订单编号').[0].content.[1].moreList.[0].content.[0].text",
                     "shopName":"basic.lists.(key='商家').[0].content.[0].text;;title='([^']+)",
@@ -151,11 +155,6 @@
                         "_root":"orders.list.[0].logistic.content.[0]",
                         "companyName":"companyName",
                         "mailNo":"mailNo"
-                    },
-                    "items":{
-                        "_root":"orders.list.[0].status.[*].subOrders.[0]",
-                        "title":"itemInfo.title",
-                        "price":"priceInfo.[0].text"
                     }
                 }
             ]
@@ -163,6 +162,7 @@
         {
             "index":"taobao_detail",
             "content_prepare":";html;var data = (.*}})\\s*</script",
+            "keep_down":true,
             "crawler_data":[
                 {
                     "_type":"json",
@@ -170,12 +170,8 @@
                     "orderStatus":"{{orderStatus}}",
                     "orderCreateTime":"{{createTime}}",
                     "orderId":"mainOrder.id",
-                    "statusInfo":"mainOrder.statusInfo",
-                    "amount":{
-                        "_root":"mainOrder.totalPrice.[*].content.[0]",
-                        "value":"value",
-                        "text":"type"
-                    },
+                    "items":"{{items}}",
+                    "totalPrice":"{{totalPrice}}",
                     "receiverAddress":"deliveryInfo.address",
                     "alipayTransactionId":"mainOrder.lines.[1].content.[1].value.value",
                     "sellerNick":"deliveryInfo.sellerNick",
@@ -185,11 +181,6 @@
                     "logistic":{
                         "companyName":"deliveryInfo.logisticsName",
                         "mailNo":"deliveryInfo.logisticsNum"
-                    },
-                    "items":{
-                        "_root":"mainOrder.subOrders.[*]",
-                        "title":"itemInfo.title",
-                        "price":"priceInfo"
                     }
                 }
             ]
@@ -202,11 +193,8 @@
                     "orderStatus":"{{orderStatus}}",
                     "orderCreateTime":"{{createTime}}",
                     "orderId":"{{bizOrderId}}",
-                    "items":{
-                        "_root":"tr.order-item @array",
-                        "title":"td.item span.name",
-                        "price":"td.price"
-                    },
+                    "items":"{{items}}",
+                    "totalPrice":"{{totalPrice}}",
                     "receiverAddress":"tr:contains('收货地址：') td @index=1",
                     "alipayTransactionId":"span.alilay-num",
                     "sellerNick":".nickname",
@@ -214,8 +202,7 @@
                     "logistic":{
                         "companyName":"tr:contains('物流公司：') td @index=1",
                         "mailNo":"tr:contains('运单号：') td @index=1"
-                    },
-                    "price":";html;实付款：\\s*<strong>([^<]+)"
+                    }
                 }
             ]
         },
@@ -227,11 +214,12 @@
                     "orderStatus":"{{orderStatus}}",
                     "orderCreateTime":"{{createTime}}",
                     "orderId":"{{bizOrderId}}",
+                    "items":"{{items}}",
+                    "totalPrice":"{{totalPrice}}",
                     "name":".bo-lsonelne;html;：([^<]+)<",
                     "cardId":";html;身份证：([^<]+) <",
                     "insureId":";html;保单编号：(\\d+)",
                     "number":";html';数量[^：]+：(\\d+)",
-                    "price":";html;保费（元）：([\\d\\.]+)",
                     "car":"div[class='bo-blittle clearfix J_Little'] .bo-blb",
                     "insureType":".bo-bread;html;([^\\s]+)\\s*>" 
                 }
@@ -245,16 +233,11 @@
                     "orderStatus":"{{orderStatus}}",
                     "orderCreateTime":"{{createTime}}",
                     "orderId":"{{orderId}}",
+                    "items":"{{items}}",
+                    "totalPrice":"{{totalPrice}}",
                     "alipayId":".alipay-number;html;(\\d+)",
                     "orderTime":";html;下单时间：</span>\\s*<span>([^<]+)",
                     "payTime":";html;付款时间：</span>\\s*<span>([^<]+)",
-                    "orders":{
-                        "_root":"table[class='order-table'] tbody tr @array",
-                        "name":".goods-name-txt",
-                        "price":"td @index=3",
-                        "num":"td @index=4"
-                    },
-                    "price":"td[rowspan='2']",
                     "receiverAddress":";html;收货地址：</span>\\s*<span>([^<]+)"
                 }
             ]
@@ -267,11 +250,12 @@
                     "orderStatus":"{{orderStatus}}",
                     "orderId":"{{orderId}}",
                     "orderCreateTime":"{{createTime}}",
+                    "items":"{{items}}",
+                    "totalPrice":"{{totalPrice}}",
                     "movie":"li.clearfix:contains('影片名称') ul",
                     "cinema":"li.clearfix:contains('所在影院') span",
                     "viewTime":"li.clearfix:contains('上映时间') span",
                     "seat":"li.clearfix:contains('座位信息') span",
-                    "price":"li[class='clearfix J_ticketContent'] strong",
                     "mobile":"li.clearfix:contains('接收影票的手机号码') span"
                 }
             ]
@@ -284,6 +268,8 @@
                     "orderStatus":"{{orderStatus}}",
                     "orderId":"{{mainBizOrderId}}",
                     "orderCreateTime":"{{createTime}}",
+                    "items":"{{items}}",
+                    "totalPrice":"{{totalPrice}}",
                     "fromCity":".train-depart .station",
                     "fromDate":".train-depart .date",
                     "fromTime":".train-depart .time",
@@ -304,7 +290,6 @@
                         "name":";html;姓名：</dt><dd>([^<]+)",
                         "mobile":";html;手机号码：</dt><dd>(\\d+)"
                     },
-                    "price":"div[class='trainorder-mod mod-submit submit-area'] .price",
                     "insureNum":";html;bizOrderId=(\\d+)"
                 }
             ]
@@ -317,6 +302,8 @@
                     "orderStatus":"{{orderStatus}}",
                     "orderCreateTime":"{{createTime}}",
                     "orderId":"{{order_id}}",
+                    "items":"{{items}}",
+                    "totalPrice":"{{totalPrice}}",
                     "fromCity":".flight-from .city",
                     "fromAirport":".flight-from .airport",
                     "fromDate":".flight-from .date",
@@ -340,8 +327,7 @@
                         "mobile":"#J_ContacterContent .J_ContacterMobile",
                         "email":"#J_ContacterContent .J_ContacterEmail"
                     },
-                    "insureNum":";html;bizOrderId=(\\d+)",
-                    "price":"span[class='pi-price  pi-price-bold pi-price-lgt'];html;(\\d+)"
+                    "insureNum":";html;bizOrderId=(\\d+)"
                 }
             ]
         },
@@ -353,6 +339,8 @@
                     "orderStatus":"{{orderStatus}}",
                     "orderCreateTime":"{{createTime}}",
                     "orderId":"{{biz_order_id}}",
+                    "items":"{{items}}",
+                    "totalPrice":"{{totalPrice}}",
                     "licalId":"div[class='field-item field-item-lg'] .field-detail",
                     "orderType":"div[class='field-item field-item-st']:contains('交易类型') .field-detail",
                     "orders":{
@@ -370,15 +358,17 @@
         {
             "index":"caipiao_detail",
             "content_prepare":";html;jsonData:([^\\)]+)\\}\\);",
+            "keep_down":true,
             "crawler_data":[
                 {
                     "_type":"json",
                     "orderType":"caipiao{{nil}}",
                     "orderStatus":"{{orderStatus}}",
                     "orderCreateTime":"{{createTime}}",
+                    "items":"{{items}}",
+                    "totalPrice":"{{totalPrice}}",
                     "orderId":"outerId",
                     "caipiaoStatus":"orderStatus",
-                    "price":"feeMoney.amount",
                     "orders":{
                         "_root":"orderNumber",
                         "luckyNumber":"luckyNumber",
