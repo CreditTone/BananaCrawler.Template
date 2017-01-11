@@ -80,7 +80,7 @@
                 }
             ],
             "logs":[
-                "prefetchCount:{{prefetchCount}} pageNum:{{pageNum}} prefetchCount>0:{{gt n prefetchCount 0}}"
+                "prefetchCount:{{prefetchCount}} pageNum:{{pageNum}} prefetchCount>0:{{gt n prefetchCount 0}} abc:{{abc}}"
             ]
         },
         {
@@ -145,6 +145,7 @@
                     "orderId":"{{bizOrderId}}",
                     "items":"{{items}}",
                     "totalPrice":"{{totalPrice}}",
+                    "buyerId":"{{buyerId}}",
                     "sellerId":"ad.banner.params.sellerId",
                     "receiverAddress":"basic.lists.(key='收货地址').[0].content.[0].text",
                     "alipayTransactionId":"basic.lists.(key='订单编号').[0].content.[1].moreList.[0].content.[0].text",
@@ -172,6 +173,7 @@
                     "orderId":"mainOrder.id",
                     "items":"{{items}}",
                     "totalPrice":"{{totalPrice}}",
+                    "buyerId":"{{buyerId}}",
                     "receiverAddress":"deliveryInfo.address",
                     "alipayTransactionId":"mainOrder.lines.[1].content.[1].value.value",
                     "sellerNick":"deliveryInfo.sellerNick",
@@ -195,6 +197,7 @@
                     "orderId":"{{bizOrderId}}",
                     "items":"{{items}}",
                     "totalPrice":"{{totalPrice}}",
+                    "buyerId":"{{buyerId}}",
                     "receiverAddress":"tr:contains('收货地址：') td @index=1",
                     "alipayTransactionId":"span.alilay-num",
                     "sellerNick":".nickname",
@@ -216,6 +219,7 @@
                     "orderId":"{{bizOrderId}}",
                     "items":"{{items}}",
                     "totalPrice":"{{totalPrice}}",
+                    "buyerId":"{{buyerId}}",
                     "name":".bo-lsonelne;html;：([^<]+)<",
                     "cardId":";html;身份证：([^<]+) <",
                     "insureId":";html;保单编号：(\\d+)",
@@ -235,6 +239,7 @@
                     "orderId":"{{orderId}}",
                     "items":"{{items}}",
                     "totalPrice":"{{totalPrice}}",
+                    "buyerId":"{{buyerId}}",
                     "alipayId":".alipay-number;html;(\\d+)",
                     "orderTime":";html;下单时间：</span>\\s*<span>([^<]+)",
                     "payTime":";html;付款时间：</span>\\s*<span>([^<]+)",
@@ -252,6 +257,7 @@
                     "orderCreateTime":"{{createTime}}",
                     "items":"{{items}}",
                     "totalPrice":"{{totalPrice}}",
+                    "buyerId":"{{buyerId}}",
                     "movie":"li.clearfix:contains('影片名称') ul",
                     "cinema":"li.clearfix:contains('所在影院') span",
                     "viewTime":"li.clearfix:contains('上映时间') span",
@@ -270,6 +276,7 @@
                     "orderCreateTime":"{{createTime}}",
                     "items":"{{items}}",
                     "totalPrice":"{{totalPrice}}",
+                    "buyerId":"{{buyerId}}",
                     "fromCity":".train-depart .station",
                     "fromDate":".train-depart .date",
                     "fromTime":".train-depart .time",
@@ -304,6 +311,7 @@
                     "orderId":"{{order_id}}",
                     "items":"{{items}}",
                     "totalPrice":"{{totalPrice}}",
+                    "buyerId":"{{buyerId}}",
                     "fromCity":".flight-from .city",
                     "fromAirport":".flight-from .airport",
                     "fromDate":".flight-from .date",
@@ -341,6 +349,7 @@
                     "orderId":"{{biz_order_id}}",
                     "items":"{{items}}",
                     "totalPrice":"{{totalPrice}}",
+                    "buyerId":"{{buyerId}}",
                     "licalId":"div[class='field-item field-item-lg'] .field-detail",
                     "orderType":"div[class='field-item field-item-st']:contains('交易类型') .field-detail",
                     "orders":{
@@ -367,6 +376,7 @@
                     "orderCreateTime":"{{createTime}}",
                     "items":"{{items}}",
                     "totalPrice":"{{totalPrice}}",
+                    "buyerId":"{{buyerId}}",
                     "orderId":"outerId",
                     "caipiaoStatus":"orderStatus",
                     "orders":{
