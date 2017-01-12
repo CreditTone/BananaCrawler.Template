@@ -129,6 +129,38 @@
                 {
                     "condition":"{{contains n _owner_url \"caipiao.taobao.com\"}}",
                     "processor":"caipiao_detail"
+                },
+                {
+                    "condition":"{{contains n _owner_url \"tmtrade.yao.95095.com\"}}",
+                    "processor":"95095_detail"
+                }
+            ]
+        },
+        {
+            "index":"95095_detail",
+            "content_prepare":";html;var detailData = (.*}}})\\s*</script",
+            "keep_down":true,
+            "crawler_data":[
+                {
+                    "_type":"json",
+                    "orderType":"95095{{nil}}",
+                    "orderStatus":"{{orderStatus}}",
+                    "orderCreateTime":"{{createTime}}",
+                    "orderId":"{{bizOrderId}}",
+                    "items":"{{items}}",
+                    "totalPrice":"{{totalPrice}}",
+                    "buyerId":"{{buyerId}}",
+                    "sellerId":"ad.banner.params.sellerId",
+                    "receiverAddress":"basic.lists.(key='收货地址').[0].content.[0].text",
+                    "alipayTransactionId":"basic.lists.(key='订单编号').[0].content.[1].moreList.[0].content.[0].text",
+                    "shopName":"basic.lists.(key='商家').[0].content.[0].text;;title='([^']+)",
+                    "shopCompany":"basic.lists.(key='商家').[0].content.[1].moreList.[0].content.[0].text",
+                    "shopPhone":"basic.lists.(key='商家').[0].content.[1].moreList.[2].content.[0].text",
+                    "logistic":{
+                        "_root":"orders.list.[0].logistic.content.[0]",
+                        "companyName":"companyName",
+                        "mailNo":"mailNo"
+                    }
                 }
             ]
         },
