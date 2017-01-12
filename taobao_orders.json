@@ -133,6 +133,39 @@
                 {
                     "condition":"{{contains n _owner_url \"tmtrade.yao.95095.com\"}}",
                     "processor":"95095_detail"
+                },
+                {
+                    "condition":"{{contains n _owner_url \"kezhan.trip.taobao.com\"}}",
+                    "processor":"kezhan_detail"
+                }
+            ]
+        },
+        {
+            "index":"kezhan_detail",
+            "crawler_data":[
+                {
+                    "_type":"json",
+                    "orderType":"kezhan{{nil}}",
+                    "orderStatus":"{{orderStatus}}",
+                    "orderCreateTime":"{{createTime}}",
+                    "orderId":"{{id}}",
+                    "items":"{{items}}",
+                    "totalPrice":"{{totalPrice}}",
+                    "buyerId":"{{buyerId}}",
+                    "inn":";html;酒店名称：([^<]+)",
+                    "innAddress":";html;酒店地址：([^<]+)",
+                    "innPhone":";html;酒店电话：([^<]+)",
+                    "room":";html;房型信息：([^<]+)",
+                    "payType":";html;支付方式：\\s*([^\\s]+)",
+                    "custom":".room-guest-info",
+                    "contacter":{
+                        "_root":"ul.contact-info",
+                        "name":"li",
+                        "mobile":"li @index=1"
+                    },
+                    "shopName":".nickname",
+                    "shopCompany":"td:contains('真实姓名') span.name",
+                    "alipayTransactionId":".alilay-num"
                 }
             ]
         },
