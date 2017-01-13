@@ -5,6 +5,11 @@
     "filter": "simple",
     "seeds":[
         {
+            "url":"https://i.taobao.com/my_taobao.htm",
+            "priority":1000,
+            "processor":"my_taobao"
+        },
+        {
             "url":"https://buyertrade.taobao.com/trade/itemlist/asyncBought.htm?action=itemlist/BoughtQueryAction&event_submit_do_query=1&_input_charset=utf8",
             "method":"post",
             "headers":{
@@ -22,11 +27,6 @@
                 "prePageNo":"0"
             },
             "processor":"buyertrade"
-        },
-        {
-            "url":"https://i.taobao.com/my_taobao.htm",
-            "priority":1000,
-            "processor":"my_taobao"
         }
     ],
     "queue": {
@@ -174,6 +174,7 @@
                     "room":";html;房型信息：([^<]+)",
                     "payType":";html;支付方式：\\s*([^\\s]+)",
                     "custom":".room-guest-info",
+                    "timeCost":"li:contains('入住日期：')",
                     "contacter":{
                         "_root":"ul.contact-info",
                         "name":"li",
