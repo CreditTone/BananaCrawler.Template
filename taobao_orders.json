@@ -31,7 +31,7 @@
     ],
     "queue": {
         "suport_priority": true,
-        "delay":1000
+        "delay":1500
     },
     "mode":{
         "prepared":true
@@ -273,7 +273,7 @@
             "index":"tradearchive_detail",
             "crawler_data":[
                 {
-                    "orderType":"taobao{{nil}}",
+                    "orderType":"tradearchive{{nil}}",
                     "orderStatus":"{{orderStatus}}",
                     "orderCreateTime":"{{createTime}}",
                     "orderId":"{{bizOrderId}}",
@@ -376,7 +376,7 @@
                     "brithday":";html;乘客生日：</dt>\\s*<dd>([^<]+)",
                     "contacter":{
                         "_root":"dl[class='contacter clearfix']",
-                        "name":";html;姓名：</dt><dd>([^<]+)",
+                        "name":"dd",
                         "mobile":";html;手机号码：</dt><dd>(\\d+)"
                     },
                     "insureNum":";html;bizOrderId=(\\d+)"
@@ -387,7 +387,7 @@
             "index":"ijipiao_detail",
             "crawler_data":[
                 {
-                    "orderType":"jipiao{{nil}}",
+                    "orderType":"ijipiao{{nil}}",
                     "orderStatus":"{{orderStatus}}",
                     "orderCreateTime":"{{createTime}}",
                     "orderId":"{{order_id}}",
