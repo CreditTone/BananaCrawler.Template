@@ -22,6 +22,11 @@
                 "prePageNo":"0"
             },
             "processor":"buyertrade"
+        },
+        {
+            "url":"https://i.taobao.com/my_taobao.htm",
+            "priority":1000,
+            "processor":"my_taobao"
         }
     ],
     "queue": {
@@ -31,7 +36,14 @@
     "mode":{
         "prepared":true
     },
+    "condition":"{{isEmpty n buyerId}}",
     "processors": [
+        {
+            "index":"my_taobao",
+            "global_context":{
+                "@value true": "#mtb-userid;value"
+            }
+        },
         {
             "index":"buyertrade",
             "page_context":{
@@ -137,6 +149,10 @@
                 {
                     "condition":"{{contains n _owner_url \"kezhan.trip.taobao.com\"}}",
                     "processor":"kezhan_detail"
+                },
+                {
+                    "condition":"{{contains n _owner_url \"ijipiao.alitrip.com\"}}",
+                    "processor":"ijipiao_detail"
                 }
             ]
         },
@@ -361,6 +377,40 @@
                         "_root":"dl[class='contacter clearfix']",
                         "name":";html;姓名：</dt><dd>([^<]+)",
                         "mobile":";html;手机号码：</dt><dd>(\\d+)"
+                    },
+                    "insureNum":";html;bizOrderId=(\\d+)"
+                }
+            ]
+        },
+        {
+            "index":"ijipiao_detail",
+            "crawler_data":[
+                {
+                    "orderType":"jipiao{{nil}}",
+                    "orderStatus":"{{orderStatus}}",
+                    "orderCreateTime":"{{createTime}}",
+                    "orderId":"{{order_id}}",
+                    "items":"{{items}}",
+                    "totalPrice":"{{totalPrice}}",
+                    "buyerId":"{{buyerId}}",
+                    "fromCity":"div.flight-detail-port p",
+                    "fromDate":".flight-detail-time .dep-time",
+                    "toCity":"div.flight-detail-port p @index=1",
+                    "toDate":"flight-detail-time .arr-time",
+                    "space":".flight-space",
+                    "flight":{
+                        "_root":"td.flight-info",
+                        "flightNum":".flight-detail-line p",
+                        "timeCost":".flight-detail-duration",
+                        "flightSize":".flight-detail-line p @index=1"
+                    },
+                    "name":"dd.name",
+                    "cardId":"dd[class='certnum J_CertNum']",
+                    "brithday":";html;乘客生日：</dt>\\s*<dd>([^<]+)",
+                    "contacter":{
+                        "name":"dd.J_ContacterName",
+                        "mobile":"dd.J_ContacterMobile;data-value",
+                        "email":"dd.J_ContacterEmail"
                     },
                     "insureNum":";html;bizOrderId=(\\d+)"
                 }
