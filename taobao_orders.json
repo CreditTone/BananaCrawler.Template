@@ -47,7 +47,14 @@
         {
             "index":"buyertrade",
             "page_context":{
-                "prefetchCount":["_json","page.prefetchCount"]
+                "prefetchCount":["_json","page.prefetchCount"],
+                "ordersIds":{
+                    "_type":"json",
+                    "_root":"mainOrders",
+                    "sellerid":"seller.id",
+                    "orderId":"id",
+                    "wuliuUrl":"statusInfo.operations.(text='查看物流').[0].url"
+                }
             },
             "crawler_request": [
                 {
@@ -68,6 +75,20 @@
                     },
                     "priority":3,
                     "processor":"detail_forward"
+                },
+                {
+                    "_type":"json",
+                    "_datacontext":{
+                        "key":"ordersIds",
+                        "data_flow":false
+                    },
+                    "_condition":"{{notEmpty n \"wuliuUrl\"}}",
+                    "url":"https://detail.i56.taobao.com/trace/trace_detail.htm?tId={{orderId}}&userId={{sellerid}}",
+                    "headers":{
+                        "Host":"detail.i56.taobao.com"
+                    },
+                    "priority":3,
+                    "processor":"wuliu_detail"
                 },
                 {
                     "_condition": "{{gt n prefetchCount 0}}",
@@ -92,7 +113,27 @@
                 }
             ],
             "logs":[
-                "prefetchCount:{{prefetchCount}} pageNum:{{pageNum}} prefetchCount>0:{{gt n prefetchCount 0}} abc:{{abc}}"
+                "prefetchCount:{{prefetchCount}} pageNum:{{pageNum}} prefetchCount>0:{{gt n prefetchCount 0}}"
+            ]
+        },
+        {
+            "index":"wuliu_detail",
+            "page_context":{
+                "fromAddress":"div[class='order-row row-address']:contains('发货地址') span.address"
+            },
+            "crawler_data":[
+                {
+                    "_condition":"{{notEmpty n \"fromAddress\"}}",
+                    "orderType":"wuliu{{nil}}",
+                    "orderId":"{{tId}}",
+                    "buyerId":"{{buyerId}}",
+                    "mailNo":"div.info div.order-row:contains('运单号码') .em",
+                    "mainCompany":"div.info div.order-row:contains('运单号码') .em @index=1",
+                    "sellerNick":"div.info div.order-row:contains('卖家昵称') .em",
+                    "sellerId":"{{userId}}",
+                    "fromAddress":"{{fromAddress}}",
+                    "toAddress":"div[class='order-row row-address']:contains('收货地址') span.address"
+                }
             ]
         },
         {
@@ -108,6 +149,10 @@
                 },
                 {
                     "condition":"{{contains n _owner_url \"trade.taobao.com\"}}",
+                    "processor":"taobao_detail"
+                },
+                {
+                    "condition":"{{and n (contains n _url \"trade.taobao.com\") (contains n _owner_url \"sec.taobao.com\")}}",
                     "processor":"taobao_detail"
                 },
                 {
