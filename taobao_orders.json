@@ -71,7 +71,8 @@
                             "realTotal":"priceInfo.realTotal",
                             "quantity":"quantity"
                         },
-                        "totalPrice":"payInfo.actualFee"
+                        "totalPrice":"payInfo.actualFee",
+                        "seller":"seller"
                     },
                     "priority":3,
                     "processor":"detail_forward"
@@ -198,6 +199,10 @@
                 {
                     "condition":"{{contains n _owner_url \"ijipiao.alitrip.com\"}}",
                     "processor":"ijipiao_detail"
+                },
+                {
+                    "condition":"{{contains n _owner_url \"daigou.taobao.com\"}}",
+                    "processor":"daigou_detail"
                 }
             ]
         },
@@ -211,6 +216,7 @@
                     "orderCreateTime":"{{createTime}}",
                     "orderId":"{{id}}",
                     "items":"{{items}}",
+                    "seller":"{{seller}}",
                     "totalPrice":"{{totalPrice}}",
                     "buyerId":"{{buyerId}}",
                     "inn":";html;酒店名称：([^<]+)",
@@ -243,6 +249,7 @@
                     "orderCreateTime":"{{createTime}}",
                     "orderId":"{{bizOrderId}}",
                     "items":"{{items}}",
+                    "seller":"{{seller}}",
                     "totalPrice":"{{totalPrice}}",
                     "buyerId":"{{buyerId}}",
                     "sellerId":"ad.banner.params.sellerId",
@@ -271,9 +278,9 @@
                     "orderCreateTime":"{{createTime}}",
                     "orderId":"{{bizOrderId}}",
                     "items":"{{items}}",
+                    "seller":"{{seller}}",
                     "totalPrice":"{{totalPrice}}",
                     "buyerId":"{{buyerId}}",
-                    "sellerId":"ad.banner.params.sellerId",
                     "receiverAddress":"basic.lists.(key='收货地址').[0].content.[0].text",
                     "alipayTransactionId":"basic.lists.(key='订单编号').[0].content.[1].moreList.[0].content.[0].text",
                     "shopName":"basic.lists.(key='商家').[0].content.[0].text;;title='([^']+)",
@@ -299,11 +306,11 @@
                     "orderCreateTime":"{{createTime}}",
                     "orderId":"mainOrder.id",
                     "items":"{{items}}",
+                    "seller":"{{seller}}",
                     "totalPrice":"{{totalPrice}}",
                     "buyerId":"{{buyerId}}",
                     "receiverAddress":"deliveryInfo.address",
                     "alipayTransactionId":"mainOrder.lines.[1].content.[1].value.value",
-                    "sellerNick":"deliveryInfo.sellerNick",
                     "shopPhone":"mainOrder.seller.phoneNum",
                     "sellerName":"mainOrder.seller.name",
                     "sellerTaobaoId":"mainOrder.seller.id",
@@ -323,11 +330,11 @@
                     "orderCreateTime":"{{createTime}}",
                     "orderId":"{{bizOrderId}}",
                     "items":"{{items}}",
+                    "seller":"{{seller}}",
                     "totalPrice":"{{totalPrice}}",
                     "buyerId":"{{buyerId}}",
                     "receiverAddress":"tr:contains('收货地址：') td @index=1",
                     "alipayTransactionId":"span.alilay-num",
-                    "sellerNick":".nickname",
                     "sellerName":".contact-info .name",
                     "logistic":{
                         "companyName":"tr:contains('物流公司：') td @index=1",
@@ -345,6 +352,7 @@
                     "orderCreateTime":"{{createTime}}",
                     "orderId":"{{bizOrderId}}",
                     "items":"{{items}}",
+                    "seller":"{{seller}}",
                     "totalPrice":"{{totalPrice}}",
                     "buyerId":"{{buyerId}}",
                     "name":".bo-lsonelne;html;：([^<]+)<",
@@ -365,6 +373,7 @@
                     "orderCreateTime":"{{createTime}}",
                     "orderId":"{{orderId}}",
                     "items":"{{items}}",
+                    "seller":"{{seller}}",
                     "totalPrice":"{{totalPrice}}",
                     "buyerId":"{{buyerId}}",
                     "alipayId":".alipay-number;html;(\\d+)",
@@ -383,6 +392,7 @@
                     "orderId":"{{orderId}}",
                     "orderCreateTime":"{{createTime}}",
                     "items":"{{items}}",
+                    "seller":"{{seller}}",
                     "totalPrice":"{{totalPrice}}",
                     "buyerId":"{{buyerId}}",
                     "movie":"li.clearfix:contains('影片名称') ul",
@@ -402,6 +412,7 @@
                     "orderId":"{{mainBizOrderId}}",
                     "orderCreateTime":"{{createTime}}",
                     "items":"{{items}}",
+                    "seller":"{{seller}}",
                     "totalPrice":"{{totalPrice}}",
                     "buyerId":"{{buyerId}}",
                     "fromCity":".train-depart .station",
@@ -437,6 +448,7 @@
                     "orderCreateTime":"{{createTime}}",
                     "orderId":"{{order_id}}",
                     "items":"{{items}}",
+                    "seller":"{{seller}}",
                     "totalPrice":"{{totalPrice}}",
                     "buyerId":"{{buyerId}}",
                     "fromCity":"div.flight-detail-port p",
@@ -471,6 +483,7 @@
                     "orderCreateTime":"{{createTime}}",
                     "orderId":"{{order_id}}",
                     "items":"{{items}}",
+                    "seller":"{{seller}}",
                     "totalPrice":"{{totalPrice}}",
                     "buyerId":"{{buyerId}}",
                     "fromCity":".flight-from .city",
@@ -509,6 +522,7 @@
                     "orderCreateTime":"{{createTime}}",
                     "orderId":"{{biz_order_id}}",
                     "items":"{{items}}",
+                    "seller":"{{seller}}",
                     "totalPrice":"{{totalPrice}}",
                     "buyerId":"{{buyerId}}",
                     "licalId":"div[class='field-item field-item-lg'] .field-detail",
@@ -520,8 +534,7 @@
                         "servicePrice":"td @index=2",
                         "itemValue":"td @index=3",
                         "num":"td @index=4"
-                    },
-                    "seller":"span.J_WangWang;data-tnick"
+                    }
                 }
             ]
         },
@@ -536,6 +549,7 @@
                     "orderStatus":"{{orderStatus}}",
                     "orderCreateTime":"{{createTime}}",
                     "items":"{{items}}",
+                    "seller":"{{seller}}",
                     "totalPrice":"{{totalPrice}}",
                     "buyerId":"{{buyerId}}",
                     "orderId":"outerId",
@@ -545,6 +559,24 @@
                         "luckyNumber":"luckyNumber",
                         "status":"status"
                     }
+                }
+            ]
+        },
+        {
+            "index":"daigou_detail",
+            "crawler_data":[
+                {
+                    "orderType":"daigou{{nil}}",
+                    "orderStatus":"{{orderStatus}}",
+                    "orderCreateTime":"{{createTime}}",
+                    "orderId":"{{orderId}}",
+                    "items":"{{items}}",
+                    "seller":"{{seller}}",
+                    "totalPrice":"{{totalPrice}}",
+                    "buyerId":"{{buyerId}}",
+                    "sellerPhone":"div.seller span.tel;html;联系电话：([^<]+)",
+                    "alipayTransactionId":"span.item:contains('支付宝交易号');html;(\\d+)",
+                    "receiverAddress":"div[class='addr clearfix'] p"
                 }
             ]
         }
