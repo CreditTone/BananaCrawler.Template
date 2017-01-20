@@ -203,6 +203,25 @@
                 {
                     "condition":"{{contains n _owner_url \"daigou.taobao.com\"}}",
                     "processor":"daigou_detail"
+                },
+                {
+                    "condition":"{{contains n _owner_url \"triptm.alitrip.com\"}}",
+                    "processor":"triptm_detail"
+                }
+            ]
+        },
+        {
+            "index":"triptm_detail",
+            "crawler_data":[
+                {
+                    "orderType":"triptm{{nil}}",
+                    "orderStatus":"{{orderStatus}}",
+                    "orderCreateTime":"{{createTime}}",
+                    "orderId":"{{bizOrderId}}",
+                    "items":"{{items}}",
+                    "seller":"{{seller}}",
+                    "totalPrice":"{{totalPrice}}",
+                    "buyerId":"{{buyerId}}"
                 }
             ]
         },
@@ -304,7 +323,7 @@
                     "orderType":"taobao{{nil}}",
                     "orderStatus":"{{orderStatus}}",
                     "orderCreateTime":"{{createTime}}",
-                    "orderId":"mainOrder.id",
+                    "orderId":"{{bizOrderId}}",
                     "items":"{{items}}",
                     "seller":"{{seller}}",
                     "totalPrice":"{{totalPrice}}",
